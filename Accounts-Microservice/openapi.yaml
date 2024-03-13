@@ -1,0 +1,478 @@
+openapi: "3.0.3"
+info:
+  title: Accounts Microservice
+
+  version: "1.0.0"
+  # description:
+servers:
+  - url: http://localhost:8080
+paths:
+  /auth/signup:
+    post:
+      tags:
+        - Accounts
+      summary: Create a new user
+      description: Creates a new user
+      requestBody:
+        description: Request to create User. Name Email & password are required fields
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSchemaSignup'
+        required: true
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSchemaSignup'
+        '409':
+            description: Bad Request/User already exists! Login instead
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: User already exists! Login instead
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+  /auth/login:
+    post:
+      tags:
+        - Accounts
+      summary: Login for existing user
+      description: User can login in its account
+      requestBody:
+        description: Request to match details of user with database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSchemaLogin'
+        required: true
+      responses:
+        '200':
+          description: LoggedIn successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSchemaLogin'
+        '404':
+            description: User not found/Email doesn't exist 
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: User doesn't exists! Signup instead
+        '400':
+          description: Invalid Password
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: Invalid Email/Password
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+  
+  /users:
+    get:
+      tags:
+        - Accounts
+      summary: Getting details of users
+      description: Getting details of users 
+      responses:
+        '200':
+          description: details found and returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSchemaResponses'
+        '404':
+            description: Users
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: User doesn't exists
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+  
+  /users/{uuid}:
+    get:
+      tags:
+        - Accounts
+      parameters:
+        - name: 'uuid'
+          in: path
+          required: true
+          description: The uuid of user
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      summary: Getting details of a user
+      description: Getting details of a user 
+      responses:
+        '200':
+          description: details of a particular user found and returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSchemaResponse'
+        '404':
+            description: User
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: User not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+
+    put:
+      tags:
+        - Accounts
+      parameters:
+        - name: 'uuid'
+          in: path
+          required: true
+          description: The uuid of user
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      summary: Edit the user details
+      description: Updates the user details 
+      requestBody:
+        description: Request to edit user details body doesn't contain email and password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSchemaRequest'
+        required: true
+      responses:
+        '200':
+          description: User details updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User details edited successfully.
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided uuid is not valid, 1234 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+    delete:
+      tags:
+        - Accounts
+      parameters:
+        - name: 'uuid'
+          in: path
+          required: true
+          description: The uuid of user
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      summary: delete the user 
+      description: delete the user  
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User deleted successfully.
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+        '400':
+          description: Invalid request 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided uuid is not valid
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+
+components:
+  schemas:
+    UserSchema:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+        role:
+          type: string
+          enum:
+             - superAdmin
+             - deliveryPartner
+             - user
+             - vendor
+             - deliveryPerson
+          default: user
+      required:
+        - uuid
+        - name
+        - email
+        - password
+
+    UserSchemaSignup:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - name
+        - email
+        - password
+
+    UserSchemaLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - email
+        - password
+
+
+    UserSchemaResponses:
+      type: array
+      items: 
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: "00a6fa25-df29-4701-9077-557932591766"
+          name:
+            type: string
+            example: "name"
+          email:
+            type: string
+            format: email
+          address:
+            type: array
+            items: 
+              type: object
+              properties:
+                area: 
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                pincode:
+                  type: string
+          phone:
+            type: string
+          profileImage:
+            type: string
+          role:
+            type: string
+            enum:
+             - superAdmin
+             - deliveryPartner
+             - user
+             - vendor
+             - deliveryPerson
+            default: user
+
+    UserSchemaResponse:
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: "00a6fa25-df29-4701-9077-557932591766"
+          name:
+            type: string
+            example: "name"
+          email:
+            type: string
+            format: email
+          address:
+            type: array
+            items: 
+              type: object
+              properties:
+                area: 
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                pincode:
+                  type: string
+          phone:
+            type: string
+          profileImage:
+            type: string
+          role:
+            type: string
+            enum:
+             - superAdmin
+             - deliveryPartner
+             - user
+             - vendor
+             - deliveryPerson
+            default: user
+
+    UserSchemaRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "name"
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: string
+
+            

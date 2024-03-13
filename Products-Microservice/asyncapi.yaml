@@ -1,0 +1,291 @@
+asyncapi: 2.6.0
+
+#Info of the application
+info:
+  title: E-Commerce Accounts Microservice
+  version: '1.0'
+  description:  E-Commerce Accounts Microservice
+
+#servers:
+#  development:
+#    url: localhost:5672
+#    protocol: amqp
+#    description: Development RabbitMQ
+#  beta:
+#    url: academic-administration.fbr.group:5672
+#    protocol: amqp
+#    description: Beta RabbitMQ
+#  production:
+#    url: academic-administration.fbr.group:5672
+#    protocol: amqp
+#    description: Production RabbitMQ
+
+channels:
+  auth.vendor_data:
+    publish:
+      description: publish vendor details 
+      summary: Inform about a new vendor
+      # operationId: SurveyRequestBooked
+      message:
+        $ref: "#/components/messages/VendorCreated"
+
+  auth.order_data:
+    description: details of user who placed the order
+    publish:
+      description: Inform about user who placed the order
+      # operationId: StudentSignedUp
+      message:
+        $ref: '#/components/messages/OrderPlaced'
+
+  auth.cart_data:
+    publish:
+      summary: sending details of user 
+      message:
+        $ref: '#/components/messages/UserDetailsAdded'
+
+  auth.shipping_data:
+    publish:
+      summary: Adding user details to Shipping microservice
+      message: 
+        $ref: '#/components/messages/UserDetailsAdded'
+  
+
+components:
+  messages:
+    OrderPlaced:
+      name: OrderPlaced
+      title: Order placing event
+      summary: Inform about user who placed the order
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: 095be615-a8ad-4c33-8e9c-c7612fbf6c9f 
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          user_details:
+            $ref: '#/components/schemas/UserDetailsPayload'
+
+    VendorCreated:
+      name: New vendor added
+      title: new vendor has registered
+      contentType: application/json
+      summary: Inform new vendor registration
+      payload:
+        type: object
+        description: details of the vendor
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          vendor_details:
+            $ref: '#/components/schemas/VendorDetailsPayload'
+
+    UserDetailsAdded:
+      name: Adding user details 
+      title: User details added 
+      payload:
+        type: object
+        description: details of the user
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the user
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          user_details:
+            $ref: '#/components/schemas/UserDetailsPayload'
+
+
+  schemas:
+    UserSchema:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+        role:
+          type: string
+          enum:
+             - superAdmin
+             - deliveryPartner
+             - user
+             - vendor
+             - deliveryPerson
+          default: user
+      required:
+        - uuid
+        - name
+        - email
+        - password
+
+    VendorDetailsSchema: 
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+        role:
+          type: string
+          default: user
+      required:
+        - uuid
+        - name
+        - email
+        - password
+        - role
+
+    VendorDetailsPayload: 
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          format: email
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+        role:
+          type: string
+          default: vendor
+      required:
+        - uuid
+        - name
+        - email
+        - password
+        - role   
+
+    UserDetailsPayload: 
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          format: email
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+        role:
+          type: string
+          enum:
+             - superAdmin
+             - deliveryPartner
+             - user
+             - vendor
+             - deliveryPerson
+          default: user
+      required:
+        - uuid
+        - name
+        - email
+        - password
+        - role   
+
+   
