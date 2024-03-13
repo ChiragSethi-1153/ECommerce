@@ -300,11 +300,20 @@ components:
         uuid:
           type: string
           example: "00a6fa25-df29-4701-9077-557932591766"
+        category:
+          type: string
         name:
           type: string
           example: "name"
-        category:
+        description: 
           type: string
+          example: "description"
+        stock:
+          type: number
+          example: '12'
+        vendor:
+          type: string
+          
         productImages:
           type: array
           items: 
