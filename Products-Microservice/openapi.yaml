@@ -8,15 +8,15 @@ servers:
   - url: http://localhost:8080
 paths:
 
-  
+
   /products:
     post:
       tags:
         - Products
       summary: Adding of new product by vendor
-      description: Creates a new user
+      description: Adding new product by vendor
       requestBody:
-        description: Request to create User. Name Email & password are required fields
+        description: Request to create new product
         content:
           application/json:
             schema:
@@ -294,7 +294,7 @@ paths:
 
 components:
   schemas:
-    UserSchema:
+    ProductSchema:
       type: object
       properties:
         uuid:
@@ -303,27 +303,9 @@ components:
         name:
           type: string
           example: "name"
-        email:
+        category:
           type: string
-          format: email
-        password:
-          type: string
-        address:
-          type: array
-          items: 
-            type: object
-            properties:
-              area: 
-                type: string
-              city:
-                type: string
-              state:
-                type: string
-              pincode:
-                type: string
-        phone:
-          type: string
-        profileImage:
+        productImages:
           type: array
           items: 
             type: string
