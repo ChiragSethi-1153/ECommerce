@@ -2,9 +2,9 @@ asyncapi: 2.6.0
 
 #Info of the application
 info:
-  title: E-Commerce Accounts Microservice
+  title: E-Commerce Products Microservice
   version: '1.0'
-  description:  E-Commerce Accounts Microservice
+  description:  E-Commerce Products Microservice
 
 #servers:
 #  development:
@@ -21,44 +21,47 @@ info:
 #    description: Production RabbitMQ
 
 channels:
-  auth.vendor_data:
+
+  products.order_data:
     publish:
-      description: publish vendor details 
-      summary: Inform about a new vendor
+      description: publish product details 
+      summary: Inform about a new product
       # operationId: SurveyRequestBooked
       message:
-        $ref: "#/components/messages/VendorCreated"
+        $ref: "#/components/messages/ProductCreated"
 
-  auth.order_data:
-    description: details of user who placed the order
+  products.cart_data:
     publish:
-      description: Inform about user who placed the order
-      # operationId: StudentSignedUp
+      description: publish product details 
+      summary: Inform about a new product
+      # operationId: SurveyRequestBooked
       message:
-        $ref: '#/components/messages/OrderPlaced'
-
-  auth.cart_data:
-    publish:
-      summary: sending details of user 
-      message:
-        $ref: '#/components/messages/UserDetailsAdded'
-
-  auth.shipping_data:
-    publish:
-      summary: Adding user details to Shipping microservice
-      message: 
-        $ref: '#/components/messages/UserDetailsAdded'
+        $ref: "#/components/messages/ProductCreated"
   
+  products.vendor_data:
+    subscribe:
+      description: new vendor details
+      summary: details of a new vendor
+      message: 
+        $ref: "#/components/messages/VendorDetailsAdded"
+        
+  product.order_data:
+    subscribe:
+      description: change in stock after placing order
+      summary: inform about change in stock
+      message: 
+        $ref: "#/components/messages/StockChanges"
 
 components:
   messages:
-    OrderPlaced:
-      name: OrderPlaced
-      title: Order placing event
-      summary: Inform about user who placed the order
+    ProductCreated:
+      name: New Product
+      title: New Product added
       contentType: application/json
+      summary: Inform new Product 
       payload:
         type: object
+        description: details of the Product
         properties:
           uuid:
             type: string
@@ -68,14 +71,12 @@ components:
             type: string
             format: date-time
             description: Date that the event was fired
-          user_details:
-            $ref: '#/components/schemas/UserDetailsPayload'
+          product_details:
+            $ref: '#/components/schemas/ProductSchema'
 
-    VendorCreated:
-      name: New vendor added
-      title: new vendor has registered
-      contentType: application/json
-      summary: Inform new vendor registration
+    VendorDetailsAdded:
+      name: vendor details 
+      title: vendor details added 
       payload:
         type: object
         description: details of the vendor
@@ -89,116 +90,57 @@ components:
             description: Date that the event was fired
           vendor_details:
             $ref: '#/components/schemas/VendorDetailsPayload'
-
-    UserDetailsAdded:
-      name: Adding user details 
-      title: User details added 
-      payload:
+      
+    StockChanges:
+      name: Order
+      title: Change in stock 
+      payload: 
         type: object
-        description: details of the user
-        properties:
+        description: new stock quantity
+        properties: 
           uuid:
             type: string
-            description: Unique ID for the user
+            description: Unique ID for the Object
           fired_at:
             type: string
             format: date-time
             description: Date that the event was fired
-          user_details:
-            $ref: '#/components/schemas/UserDetailsPayload'
+          order_details:
+            $ref: '#/components/schemas/OrderDetailPayload'
 
 
   schemas:
-    UserSchema:
+    ProductSchema:
       type: object
       properties:
         uuid:
           type: string
           example: "00a6fa25-df29-4701-9077-557932591766"
+        category:
+          type: string
         name:
           type: string
           example: "name"
-        email:
+        description: 
           type: string
-          format: email
-        password:
+          example: "description"
+        stock:
+          type: number
+          example: '12'
+        vendor:
           type: string
-        address:
-          type: array
-          items: 
-            type: object
-            properties:
-              area: 
-                type: string
-              city:
-                type: string
-              state:
-                type: string
-              pincode:
-                type: string
-        phone:
-          type: string
-        profileImage:
+          example: "00a6fa25"
+        productImages:
           type: array
           items: 
             type: string
-        role:
-          type: string
-          enum:
-             - superAdmin
-             - deliveryPartner
-             - user
-             - vendor
-             - deliveryPerson
-          default: user
       required:
         - uuid
+        - category
         - name
-        - email
-        - password
-
-    VendorDetailsSchema: 
-      type: object
-      properties:
-        uuid:
-          type: string
-          example: "00a6fa25-df29-4701-9077-557932591766"
-        name:
-          type: string
-          example: "name"
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-        address:
-          type: array
-          items: 
-            type: object
-            properties:
-              area: 
-                type: string
-              city:
-                type: string
-              state:
-                type: string
-              pincode:
-                type: string
-        phone:
-          type: string
-        profileImage:
-          type: array
-          items: 
-            type: string
-        role:
-          type: string
-          default: user
-      required:
-        - uuid
-        - name
-        - email
-        - password
-        - role
+        - description
+        - vendor
+        - stock
 
     VendorDetailsPayload: 
       type: object
@@ -241,51 +183,15 @@ components:
         - password
         - role   
 
-    UserDetailsPayload: 
+    OrderDetailPayload:
       type: object
       properties:
         uuid:
           type: string
-          example: "00a6fa25-df29-4701-9077-557932591766"
-        name:
-          type: string
-          example: "name"
-        email:
-          type: string
-          format: email
-        address:
-          type: array
-          items: 
-            type: object
-            properties:
-              area: 
-                type: string
-              city:
-                type: string
-              state:
-                type: string
-              pincode:
-                type: string
-        phone:
-          type: string
-        profileImage:
-          type: array
-          items: 
-            type: string
-        role:
-          type: string
-          enum:
-             - superAdmin
-             - deliveryPartner
-             - user
-             - vendor
-             - deliveryPerson
-          default: user
+        stock: 
+          type: number
       required:
         - uuid
-        - name
-        - email
-        - password
-        - role   
+        - stock
 
    

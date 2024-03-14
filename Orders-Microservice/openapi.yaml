@@ -9,17 +9,17 @@ servers:
 paths:
 
 
-  /products:
+  /orders:
     get:
       tags:
-        - Products
-      summary: Getting all products
-      description: Getting list of all products
+        - Orders     
+      summary: Getting all orders
+      description: Getting list of all orders
       parameters:
         - name: 'searchBody'
           in: query
           required: false
-          description: search result for products, can contain product name, vendor name, description, 
+          description: search result for orders, can contain product name, vendor name, description, user 
           example: "abc"
           schema:
             type: string 
@@ -29,9 +29,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductSchema'
+                $ref: '#/components/schemas/OrderSchema'
         '404':
-            description: Products not found
+            description: Orders not found
             content:
               application/json:
                 schema:
@@ -39,7 +39,7 @@ paths:
                   properties:
                     error:
                       type: string
-                      example: No Products found
+                      example: No Orders found
         '500':
           description: Internal server error
           content:
@@ -52,26 +52,26 @@ paths:
                     example: server not working
 
   
-  /products/{uuid}:
+  /orders/{uuid}:
     post:
       tags:
-        - Products
-      summary: Adding of new product by vendor
-      description: Adding new product by vendor
+        - Orders
+      summary: Adding of new order by user
+      description: Adding new order by user
       parameters:
         - name: 'uuid'
           in: path
           required: true
-          description: uuid of vendor
+          description: uuid of user
           example: "00a6fa25-df29-4701-9077-557932591766"
           schema:
             type: string
       requestBody:
-        description: Request to create new product
+        description: Request to create new order
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductSchema'
+              $ref: '#/components/schemas/OrderSchema'
         required: true
       responses:
         '201':
@@ -79,7 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductSchema'
+                $ref: '#/components/schemas/OrderSchema'
         '401':
           description: Vendor not authorized
           content:
@@ -103,7 +103,7 @@ paths:
 
     get:
       tags:
-        - Products
+        - Orders
       parameters:
         - name: 'uuid'
           in: path
@@ -144,31 +144,31 @@ paths:
 
     put:
       tags:
-        - Products
+        - Orders
       parameters:
         - name: 'uuid'
           in: path
           required: true
-          description: The uuid of product
+          description: The uuid of order
           example: "00a6fa25-df29-4701-9077-557932591766"
           schema:
             type: string
         - name: 'uuid'
           in: query
           required: true
-          description: The uuid of vendor
+          description: The uuid of user
           example: "00a6fa25-df29-4701-9077-557932591766"
           schema:
             type: string
       summary: Edit the Product details
       description: Edit the Product details 
-      requestBody:
-        description: Request to edit product details
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EditProductRequest'
-        required: true
+      # requestBody:
+      #   description: Request to edit product details
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/EditProductRequest'
+      #   required: true
       responses:
         '200':
           description: Product details updated successfully
@@ -191,7 +191,7 @@ paths:
                     type: string
                     example: Product not found
         '401':
-          description: Vendor not authorized
+          description: user not authorized
           content:
             application/json:
               schema:
@@ -199,7 +199,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Vendor not authorized
+                    example: user not authorized
         '400':
           description: Invalid request payload
           content:
@@ -223,7 +223,7 @@ paths:
     
     patch:
       tags:
-        - Products
+        - Orders
       parameters:
         - name: 'uuid'
           in: path
@@ -241,13 +241,13 @@ paths:
             type: string
       summary: Edit the Product details
       description: Edit the Product details 
-      requestBody:
-        description: Request to edit product details
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EditProductRequest'
-        required: true
+      # requestBody:
+      #   description: Request to edit product details
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/EditProductRequest'
+      #   required: true
       responses:
         '200':
           description: Product details updated successfully
@@ -302,7 +302,7 @@ paths:
 
     delete:
       tags:
-        - Products
+        - Orders
       parameters:
         - name: 'uuid'
           in: path
@@ -375,6 +375,27 @@ paths:
 
 components:
   schemas:
+
+    OrderSchema:
+      type: object
+      properties:
+        user: 
+          type: string
+        products:
+          type: array
+          items:
+            type: string
+        payment:
+          type: string
+        status:
+          type: string
+          enum: 
+            - placed
+            - cancelled
+            - fulfilled
+            - returned
+            - exchanged
+
     ProductSchema:
       type: object
       properties:
@@ -407,27 +428,8 @@ components:
         - vendor
         - stock
 
-    EditProductRequest:
-      type: object
-      properties:
-        category:
-          type: string
-        name:
-          type: string
-          example: "name"
-        description: 
-          type: string
-          example: "description"
-        stock:
-          type: number
-          example: '12'
-        productImages:
-          type: array
-          items: 
-            type: string
 
-
-    VendorSchema:
+    UserSchema:
       type: array
       items: 
         type: object
@@ -460,4 +462,9 @@ components:
             type: string
           role:
             type: string
+            enum: 
+            - user
+            - super admin
+            - vendor
+            - 
             default: vendor
