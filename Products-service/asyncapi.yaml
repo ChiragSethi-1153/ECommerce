@@ -22,7 +22,7 @@ info:
 
 channels:
 
-  products.order_data:
+  products.product_data:
     publish:
       description: publish product details 
       summary: Inform about a new product
@@ -30,20 +30,29 @@ channels:
       message:
         $ref: "#/components/messages/ProductCreated"
 
-  products.cart_data:
+  products.edit_product_data:
     publish:
-      description: publish product details 
-      summary: Inform about a new product
+      description: edit product details 
+      summary: Inform about a change in product
       # operationId: SurveyRequestBooked
       message:
-        $ref: "#/components/messages/ProductCreated"
-  
-  products.vendor_data:
+        $ref: "#/components/messages/EditProduct"
+
+  products.user_data:
     subscribe:
-      description: new vendor details
-      summary: details of a new vendor
-      message: 
-        $ref: "#/components/messages/VendorDetailsAdded"
+      description: subscribe user details 
+      summary: Inform about a new user
+      # operationId: SurveyRequestBooked
+      message:
+        $ref: "#/components/messages/UserDetailsAdded"
+  
+  products.edit_user_data:
+    subscribe:
+      description: subcribe user details edit 
+      summary: Inform about a edit user
+      # operationId: SurveyRequestBooked
+      message:
+        $ref: "#/components/messages/EditUserDetails"
         
   product.order_data:
     subscribe:
@@ -74,12 +83,52 @@ components:
           product_details:
             $ref: '#/components/schemas/ProductSchema'
 
-    VendorDetailsAdded:
-      name: vendor details 
-      title: vendor details added 
+    EditProduct:
+      name: Edit Product
+      title: Product edited
+      contentType: application/json
+      summary: Inform change in Product 
       payload:
         type: object
-        description: details of the vendor
+        description: details of the Product
+        properties:
+          uuid:
+            type: string
+            example: 095be615-a8ad-4c33-8e9c-c7612fbf6c9f 
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          product_details:
+            $ref: '#/components/schemas/EditProductSchema'
+
+    EditProductDetails:
+      name: Edit Product
+      title:  Product details edited
+      contentType: application/json
+      summary: Inform edits in Product 
+      payload:
+        type: object
+        description: change in details of the Product
+        properties:
+          uuid:
+            type: string
+            example: 095be615-a8ad-4c33-8e9c-c7612fbf6c9f 
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          product_details:
+            $ref: '#/components/schemas/EditProductSchema'
+
+    UserDetailsAdded:
+      name: user details 
+      title: user details added 
+      payload:
+        type: object
+        description: details of the user
         properties:
           uuid:
             type: string
@@ -88,8 +137,25 @@ components:
             type: string
             format: date-time
             description: Date that the event was fired
-          vendor_details:
-            $ref: '#/components/schemas/VendorDetailsPayload'
+          user_details:
+            $ref: '#/components/schemas/UserDetailsPayload'
+    
+    EditUserDetails:
+      name: user details 
+      title: user details edit 
+      payload:
+        type: object
+        description: edit details of the user
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          user_details:
+            $ref: '#/components/schemas/EditUserDetailsPayload'
       
     StockChanges:
       name: Order
@@ -141,8 +207,28 @@ components:
         - description
         - vendor
         - stock
+    
+    EditProductSchema:
+      type: object
+      properties:
+        category:
+          type: string
+        name:
+          type: string
+          example: "name"
+        description: 
+          type: string
+          example: "description"
+        stock:
+          type: number
+          example: '12'
+        productImages:
+          type: array
+          items: 
+            type: string
 
-    VendorDetailsPayload: 
+
+    UserDetailsPayload: 
       type: object
       properties:
         uuid:
@@ -175,13 +261,45 @@ components:
             type: string
         role:
           type: string
-          default: vendor
+          enum:
+             - superAdmin
+             - deliveryPartner
+             - user
+             - vendor
+             - deliveryPerson
+          default: user
       required:
         - uuid
         - name
         - email
         - password
         - role   
+
+    EditUserDetailsPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "name"
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
 
     OrderDetailPayload:
       type: object

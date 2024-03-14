@@ -1,0 +1,341 @@
+asyncapi: 2.6.0
+
+#Info of the application
+info:
+  title: E-Commerce Orders Microservice
+  version: '1.0'
+  description:  E-Commerce Orders Microservice
+
+#servers:
+#  development:
+#    url: localhost:5672
+#    protocol: amqp
+#    description: Development RabbitMQ
+#  beta:
+#    url: academic-administration.fbr.group:5672
+#    protocol: amqp
+#    description: Beta RabbitMQ
+#  production:
+#    url: academic-administration.fbr.group:5672
+#    protocol: amqp
+#    description: Production RabbitMQ
+
+channels:
+  orders.order_data:
+    description: details of the order 
+    publish:
+      description: Inform about the order 
+      # operationId: StudentSignedUp
+      message:
+        $ref: '#/components/messages/OrderPlaced'
+
+  orders.edit_order_data:
+    description: details of the order 
+    publish:
+      description: Inform about the order 
+      # operationId: StudentSignedUp
+      message:
+        $ref: '#/components/messages/EditOrder'
+
+  orders.user_data:
+    subscribe:
+      summary: Adding user details 
+      message: 
+        $ref: '#/components/messages/UserDetailsAdded'
+
+  orders.edit_user_data:
+    subscribe:
+      summary: Edit user details 
+      message: 
+        $ref: '#/components/messages/EditUserDetails'
+
+  orders.product_data:
+    subscribe:
+      summary: Adding product details 
+      message: 
+        $ref: '#/components/messages/ProductDetailsAdded'
+
+  orders.edit_product_data:
+    subscribe:
+      summary: Editing product details 
+      message: 
+        $ref: '#/components/messages/EditProductDetails'
+
+components:
+  messages:
+    OrderPlaced:
+      name: OrderPlaced
+      title: Order placing event
+      summary: Inform that an order has been placed
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: 095be615-a8ad-4c33-8e9c-c7612fbf6c9f 
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          order_details:
+            $ref: '#/components/schemas/OrderDetailsPayload'
+
+    EditOrder:
+      name: OrderEdit
+      title: Order edit
+      summary: Inform that an order has been edited
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: 095be615-a8ad-4c33-8e9c-c7612fbf6c9f 
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          order_details:
+            $ref: '#/components/schemas/EditOrderDetailsPayload'
+
+    UserDetailsAdded:
+      name: Adding user details 
+      title: User details added 
+      payload:
+        type: object
+        description: details of the user
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the user
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          user_details:
+            $ref: '#/components/schemas/UserDetailsPayload'
+
+    EditUserDetails:
+      name: user details 
+      title: user details edit 
+      payload:
+        type: object
+        description: edit details of the user
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          user_details:
+            $ref: '#/components/schemas/EditUserDetailsPayload'
+
+    ProductDetailsAdded:
+      name: product details 
+      title: product details added 
+      payload:
+        type: object
+        description: details of the product
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          product_details:
+            $ref: '#/components/schemas/ProductDetailsPayload'
+    
+    EditProductDetails:
+      name: Edit Product
+      title: Product edited
+      contentType: application/json
+      summary: Inform change in Product 
+      payload:
+        type: object
+        description: details of the Product
+        properties:
+          uuid:
+            type: string
+            example: 095be615-a8ad-4c33-8e9c-c7612fbf6c9f 
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          product_details:
+            $ref: '#/components/schemas/EditProductPayload'
+
+
+  schemas:
+
+    OrderDetailsPayload:
+      type: object
+      properties:
+        user: 
+          type: string
+        orders:
+          type: array
+          items:
+            type: string
+        payment:
+          type: string
+        status:
+          type: string
+          enum: 
+            - placed
+            - cancelled
+            - fulfilled
+            - returned
+            - exchanged
+
+    EditOrderDetailsPayload:
+      type: object
+      properties:
+        user: 
+          type: string
+        orders:
+          type: array
+          items:
+            type: string
+        payment:
+          type: string
+        status:
+          type: string
+          enum: 
+            - placed
+            - cancelled
+            - fulfilled
+            - returned
+            - exchanged
+
+    UserDetailsPayload: 
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          format: email
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+        role:
+          type: string
+          enum:
+             - superAdmin
+             - deliveryPartner
+             - user
+             - vendor
+             - deliveryPerson
+          default: user
+      required:
+        - uuid
+        - name
+        - email
+        - password
+        - role   
+
+    ProductDetailsPayload:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        category:
+          type: string
+        name:
+          type: string
+          example: "name"
+        description: 
+          type: string
+          example: "description"
+        stock:
+          type: number
+          example: '12'
+        user:
+          type: string
+          example: "00a6fa25"
+        orderImages:
+          type: array
+          items: 
+            type: string
+      required:
+        - uuid
+        - category
+        - name
+        - description
+        - user
+        - stock
+
+    EditUserDetailsPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "name"
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+
+    EditProductPayload:
+      type: object
+      properties:
+        category:
+          type: string
+        name:
+          type: string
+          example: "name"
+        description: 
+          type: string
+          example: "description"
+        stock:
+          type: number
+          example: '12'
+        productImages:
+          type: array
+          items: 
+            type: string
+    

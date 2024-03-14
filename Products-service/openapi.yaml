@@ -5,7 +5,7 @@ info:
   version: "1.0.0"
   # description:
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8081
 paths:
 
 
@@ -50,9 +50,6 @@ paths:
                   error:
                     type: string
                     example: server not working
-
-  
-  /products/{uuid}:
     post:
       tags:
         - Products
@@ -60,7 +57,7 @@ paths:
       description: Adding new product by vendor
       parameters:
         - name: 'uuid'
-          in: path
+          in: query
           required: true
           description: uuid of vendor
           example: "00a6fa25-df29-4701-9077-557932591766"
@@ -71,7 +68,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductSchema'
+              $ref: '#/components/schemas/CreateProductSchema'
         required: true
       responses:
         '201':
@@ -79,7 +76,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductSchema'
+                $ref: '#/components/schemas/CreateProductSchema'
         '401':
           description: Vendor not authorized
           content:
@@ -100,7 +97,87 @@ paths:
                   error:
                     type: string
                     example: server not working
+    put:
+      tags:
+        - Products
+      parameters:
+        - name: 'uuid'
+          in: query
+          required: true
+          description: The uuid of product
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+        - name: 'uuid'
+          in: query
+          required: true
+          description: The uuid of vendor
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      summary: Edit the Product details
+      description: Edit the Product details 
+      requestBody:
+        description: Request to edit product details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditProductRequest'
+        required: true
+      responses:
+        '200':
+          description: Product details updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Product details edited successfully.
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Product not found
+        '401':
+          description: Vendor not authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Vendor not authorized
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided uuid is not valid
+        
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 
+  
+  /products/{uuid}:
     get:
       tags:
         - Products
@@ -142,164 +219,8 @@ paths:
                     type: string
                     example: server not working
 
-    put:
-      tags:
-        - Products
-      parameters:
-        - name: 'uuid'
-          in: path
-          required: true
-          description: The uuid of product
-          example: "00a6fa25-df29-4701-9077-557932591766"
-          schema:
-            type: string
-        - name: 'uuid'
-          in: query
-          required: true
-          description: The uuid of vendor
-          example: "00a6fa25-df29-4701-9077-557932591766"
-          schema:
-            type: string
-      summary: Edit the Product details
-      description: Edit the Product details 
-      requestBody:
-        description: Request to edit product details
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EditProductRequest'
-        required: true
-      responses:
-        '200':
-          description: Product details updated successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Product details edited successfully.
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Product not found
-        '401':
-          description: Vendor not authorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Vendor not authorized
-        '400':
-          description: Invalid request payload
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: The provided uuid is not valid
-        
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
     
-    patch:
-      tags:
-        - Products
-      parameters:
-        - name: 'uuid'
-          in: path
-          required: true
-          description: The uuid of product
-          example: "00a6fa25-df29-4701-9077-557932591766"
-          schema:
-            type: string
-        - name: 'uuid'
-          in: query
-          required: true
-          description: The uuid of vendor
-          example: "00a6fa25-df29-4701-9077-557932591766"
-          schema:
-            type: string
-      summary: Edit the Product details
-      description: Edit the Product details 
-      requestBody:
-        description: Request to edit product details
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EditProductRequest'
-        required: true
-      responses:
-        '200':
-          description: Product details updated successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Product details edited successfully.
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Product not found
-        '401':
-          description: Vendor not authorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Vendor not authorized
-        '400':
-          description: Invalid request payload
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: The provided uuid is not valid
-        
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-
+    
     delete:
       tags:
         - Products
@@ -381,6 +302,35 @@ components:
         uuid:
           type: string
           example: "00a6fa25-df29-4701-9077-557932591766"
+        category:
+          type: string
+        name:
+          type: string
+          example: "name"
+        description: 
+          type: string
+          example: "description"
+        stock:
+          type: number
+          example: '12'
+        vendor:
+          type: string
+          example: "00a6fa25"
+        productImages:
+          type: array
+          items: 
+            type: string
+      required:
+        - uuid
+        - category
+        - name
+        - description
+        - vendor
+        - stock
+
+    CreateProductSchema:
+      type: object
+      properties:
         category:
           type: string
         name:

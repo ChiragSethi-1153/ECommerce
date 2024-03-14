@@ -131,55 +131,13 @@ paths:
                   error:
                     type: string
                     example: server not working
-  
-  /users/{uuid}:
-    get:
-      tags:
-        - Accounts
-      parameters:
-        - name: 'uuid'
-          in: path
-          required: true
-          description: The uuid of user
-          example: "00a6fa25-df29-4701-9077-557932591766"
-          schema:
-            type: string
-      summary: Getting details of a user
-      description: Getting details of a user 
-      responses:
-        '200':
-          description: details of a particular user found and returned successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserSchemaResponse'
-        '404':
-            description: User
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      example: User not found
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: server not working
-
+      
     put:
       tags:
         - Accounts
       parameters:
         - name: 'uuid'
-          in: path
+          in: query
           required: true
           description: The uuid of user
           example: "00a6fa25-df29-4701-9077-557932591766"
@@ -234,6 +192,50 @@ paths:
                 properties:
                   error:
                     type: string
+  
+  /users/{uuid}:
+    get:
+      tags:
+        - Accounts
+      parameters:
+        - name: 'uuid'
+          in: path
+          required: true
+          description: The uuid of user
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      summary: Getting details of a user
+      description: Getting details of a user 
+      responses:
+        '200':
+          description: details of a particular user found and returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSchemaResponse'
+        '404':
+            description: User
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: User not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+
+    
 
     delete:
       tags:

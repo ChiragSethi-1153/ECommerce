@@ -1,0 +1,55 @@
+openapi: "3.0.3"
+info:
+  title: Access control Microservice
+
+  version: "1.0.0"
+  # description:
+servers:
+  - url: http://localhost:8085
+paths:
+  /access:
+    get:
+      tags:
+        - Acces Control
+      summary: Checking access of users
+      description: Getting access list of all users
+      parameters:
+        - name: 'role'
+          in: query
+          required: true
+          description: check for access rights of a user
+          example: "vendor"
+          schema:
+            type: string 
+        - name: 'number'
+          in: query
+          required: true
+          description: check for access request
+          example: "1"
+          schema:
+            type: string 
+      responses:
+        '200':
+          description: access allowed
+
+        '401':
+            description: Not authorized
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: Not authorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+

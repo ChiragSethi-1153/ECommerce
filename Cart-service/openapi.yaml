@@ -1,0 +1,288 @@
+openapi: "3.0.3"
+info:
+  title: Cart Microservice
+
+  version: "1.0.0"
+  # description:
+servers:
+  - url: http://localhost:8082
+paths:
+  
+  /carts:
+    post:
+      tags:
+        - Cart
+      summary: Adding of new cart by user
+      description: Adding new cart by user
+      parameters:
+        - name: 'uuid'
+          in: query
+          required: true
+          description: uuid of user
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+        - name: 'uuid'
+          in: query
+          required: true
+          description: uuid of product
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      requestBody:
+        description: Request to create new cart
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartSchema'
+        required: true
+      responses:
+        '201':
+          description: cart created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartSchema'
+        '401':
+          description: User not authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not authorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+    put:
+      tags:
+        - Cart
+      parameters:
+        - name: 'uuid'
+          in: query
+          required: true
+          description: The uuid of user
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      summary: Edit the cart details
+      description: Edit the cart details 
+      requestBody:
+        description: Request to edit cart details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditCartRequest'
+        required: true
+      responses:
+        '200':
+          description: cart details updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: cart details edited successfully.
+        
+        '401':
+          description: user not authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: user not authorized
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided uuid is not valid
+        
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /carts/{uuid}:
+    get:
+      tags:
+        - Cart
+      parameters:
+        - name: 'uuid'
+          in: path
+          required: true
+          description: The uuid of User
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      summary: Getting details of a cart
+      description: Getting details of a cart
+      responses:
+        '200':
+          description: details of a particular cart found and returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartSchema'
+        
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+
+
+
+components:
+  schemas:
+
+    CartSchema: 
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        user:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        products:
+          type: array
+          items: 
+            type: string
+            example: "00a6fa25-df29-4701-9077-557932591766"
+      required:
+        - uuid
+        - user
+        - products
+
+    EditCartRequest: 
+      type: object
+      properties:
+        products:
+          type: array
+          items: 
+            type: string
+            example: "00a6fa25-df29-4701-9077-557932591766"
+
+    ProductSchema:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        category:
+          type: string
+        name:
+          type: string
+          example: "name"
+        description: 
+          type: string
+          example: "description"
+        stock:
+          type: number
+          example: '12'
+        vendor:
+          type: string
+          example: "00a6fa25"
+        cartImages:
+          type: array
+          items: 
+            type: string
+      required:
+        - uuid
+        - category
+        - name
+        - description
+        - vendor
+        - stock
+
+    EditProductRequest:
+      type: object
+      properties:
+        category:
+          type: string
+        name:
+          type: string
+          example: "name"
+        description: 
+          type: string
+          example: "description"
+        stock:
+          type: number
+          example: '12'
+        cartImages:
+          type: array
+          items: 
+            type: string
+
+
+    UserSchema:
+      type: array
+      items: 
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: "00a6fa25-df29-4701-9077-557932591766"
+          name:
+            type: string
+            example: "name"
+          email:
+            type: string
+            format: email
+          address:
+            type: array
+            items: 
+              type: object
+              properties:
+                area: 
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                pincode:
+                  type: string
+          phone:
+            type: string
+          profileImage:
+            type: string
+          role:
+            type: string
+            enum:
+              - superAdmin
+              - deliveryPartner
+              - user
+              - vendor
+              - deliveryPerson
+            default: user
+
+
+    

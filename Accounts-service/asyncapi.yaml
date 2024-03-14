@@ -1,0 +1,157 @@
+asyncapi: 2.6.0
+
+#Info of the application
+info:
+  title: E-Commerce Accounts Microservice
+  version: '1.0'
+  description:  E-Commerce Accounts Microservice
+
+#servers:
+#  development:
+#    url: localhost:5672
+#    protocol: amqp
+#    description: Development RabbitMQ
+#  beta:
+#    url: academic-administration.fbr.group:5672
+#    protocol: amqp
+#    description: Beta RabbitMQ
+#  production:
+#    url: academic-administration.fbr.group:5672
+#    protocol: amqp
+#    description: Production RabbitMQ
+
+channels:
+  auth.user_data:
+    publish:
+      description: publish user details 
+      summary: Inform about a new user
+      # operationId: SurveyRequestBooked
+      message:
+        $ref: "#/components/messages/UserCreated"
+  
+  auth.edit_user_data:
+    publish:
+      description: publish user details 
+      summary: Inform about a new user
+      # operationId: SurveyRequestBooked
+      message:
+        $ref: "#/components/messages/EditUserDetails"
+  
+
+components:
+  messages:
+
+    UserCreated:
+      name: New user
+      title: New user has registered
+      contentType: application/json
+      summary: Inform new user registration
+      payload:
+        type: object
+        description: details of the user
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          vendor_details:
+            $ref: '#/components/schemas/UserDetailsPayload'
+
+    EditUserDetails:
+      name: Edit user details
+      title: Edit user details
+      payload:
+        type: object
+        description: details of the user
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the user
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          user_details:
+            $ref: '#/components/schemas/EditUserDetailsPayload'
+
+
+  schemas:
+   
+    UserDetailsPayload: 
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "00a6fa25-df29-4701-9077-557932591766"
+        name:
+          type: string
+          example: "name"
+        email:
+          type: string
+          format: email
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+        role:
+          type: string
+          enum:
+             - superAdmin
+             - deliveryPartner
+             - user
+             - vendor
+             - deliveryPerson
+          default: user
+      required:
+        - uuid
+        - name
+        - email
+        - password
+        - role   
+
+    EditUserDetailsPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "name"
+        address:
+          type: array
+          items: 
+            type: object
+            properties:
+              area: 
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              pincode:
+                type: string
+        phone:
+          type: string
+        profileImage:
+          type: array
+          items: 
+            type: string
+        
+
+   

@@ -1,11 +1,11 @@
 openapi: "3.0.3"
 info:
-  title: Product Microservice
+  title: Order Microservice
 
   version: "1.0.0"
   # description:
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8083
 paths:
 
 
@@ -19,7 +19,7 @@ paths:
         - name: 'searchBody'
           in: query
           required: false
-          description: search result for orders, can contain product name, vendor name, description, user 
+          description: search result for orders, can contain order name, user name, description, user 
           example: "abc"
           schema:
             type: string 
@@ -50,9 +50,7 @@ paths:
                   error:
                     type: string
                     example: server not working
-
-  
-  /orders/{uuid}:
+      
     post:
       tags:
         - Orders
@@ -60,7 +58,7 @@ paths:
       description: Adding new order by user
       parameters:
         - name: 'uuid'
-          in: path
+          in: query
           required: true
           description: uuid of user
           example: "00a6fa25-df29-4701-9077-557932591766"
@@ -81,7 +79,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderSchema'
         '401':
-          description: Vendor not authorized
+          description: user not authorized
           content:
             application/json:
               schema:
@@ -89,48 +87,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Vendor not authorized
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: server not working
-
-    get:
-      tags:
-        - Orders
-      parameters:
-        - name: 'uuid'
-          in: path
-          required: true
-          description: The uuid of product
-          example: "00a6fa25-df29-4701-9077-557932591766"
-          schema:
-            type: string
-      summary: Getting details of a product
-      description: Getting details of a product
-      responses:
-        '200':
-          description: details of a particular product found and returned successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductSchema'
-        '404':
-            description: Product not found
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      example: Product not found
+                    example: user not authorized
         '500':
           description: Internal server error
           content:
@@ -147,7 +104,7 @@ paths:
         - Orders
       parameters:
         - name: 'uuid'
-          in: path
+          in: query
           required: true
           description: The uuid of order
           example: "00a6fa25-df29-4701-9077-557932591766"
@@ -160,18 +117,17 @@ paths:
           example: "00a6fa25-df29-4701-9077-557932591766"
           schema:
             type: string
-      summary: Edit the Product details
-      description: Edit the Product details 
-      # requestBody:
-      #   description: Request to edit product details
-      #   content:
-      #     application/json:
-      #       schema:
-      #         $ref: '#/components/schemas/EditProductRequest'
-      #   required: true
+      summary: Edit the order details
+      description: Edit the order details 
+      requestBody:
+        description: Request to edit order details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditOrderRequest'
       responses:
         '200':
-          description: Product details updated successfully
+          description: order details updated successfully
           content:
             application/json:
               schema:
@@ -179,7 +135,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Product details edited successfully.
+                    example: order details edited successfully.
         '404':
           description: Not Found
           content:
@@ -189,7 +145,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Product not found
+                    example: order not found
         '401':
           description: user not authorized
           content:
@@ -220,76 +176,39 @@ paths:
                 properties:
                   error:
                     type: string
+
     
-    patch:
+  /orders/{uuid}:
+    get:
       tags:
         - Orders
       parameters:
         - name: 'uuid'
           in: path
           required: true
-          description: The uuid of product
+          description: The uuid of orders
           example: "00a6fa25-df29-4701-9077-557932591766"
           schema:
             type: string
-        - name: 'uuid'
-          in: query
-          required: true
-          description: The uuid of vendor
-          example: "00a6fa25-df29-4701-9077-557932591766"
-          schema:
-            type: string
-      summary: Edit the Product details
-      description: Edit the Product details 
-      # requestBody:
-      #   description: Request to edit product details
-      #   content:
-      #     application/json:
-      #       schema:
-      #         $ref: '#/components/schemas/EditProductRequest'
-      #   required: true
+      summary: Getting details of a orders
+      description: Getting details of a orders
       responses:
         '200':
-          description: Product details updated successfully
+          description: details of a particular order found and returned successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Product details edited successfully.
+                $ref: '#/components/schemas/OrderSchema'
         '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Product not found
-        '401':
-          description: Vendor not authorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: Vendor not authorized
-        '400':
-          description: Invalid request payload
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: The provided uuid is not valid
-        
+            description: order not found
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: order not found
         '500':
           description: Internal server error
           content:
@@ -299,6 +218,11 @@ paths:
                 properties:
                   error:
                     type: string
+                    example: server not working
+
+    
+    
+              
 
     delete:
       tags:
@@ -307,22 +231,22 @@ paths:
         - name: 'uuid'
           in: path
           required: true
-          description: The uuid of product
+          description: The uuid of order
           example: "00a6fa25-df29-4701-9077-557932591766"
           schema:
             type: string
         - name: 'uuid'
           in: query
           required: true
-          description: The uuid of vendor
+          description: The uuid of user
           example: "00a6fa25-df29-4701-9077-557932591766"
           schema:
             type: string
-      summary: delete the product 
-      description: delete the product  
+      summary: delete the order 
+      description: delete the order  
       responses:
         '200':
-          description: product deleted successfully
+          description: order deleted successfully
           content:
             application/json:
               schema:
@@ -330,7 +254,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: product deleted successfully.
+                    example: order deleted successfully.
         '404':
           description: Not Found
           content:
@@ -340,7 +264,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Product not found
+                    example: order not found
         '400':
           description: Invalid request 
           content:
@@ -352,7 +276,7 @@ paths:
                     type: string
                     example: The provided uuid is not valid
         '401':
-          description: Vendor not authorized
+          description: user not authorized
           content:
             application/json:
               schema:
@@ -360,7 +284,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Vendor not authorized
+                    example: user not authorized
 
         '500':
           description: Internal server error
@@ -381,7 +305,7 @@ components:
       properties:
         user: 
           type: string
-        products:
+        orders:
           type: array
           items:
             type: string
@@ -395,6 +319,25 @@ components:
             - fulfilled
             - returned
             - exchanged
+    
+    EditOrderRequest:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            type: string
+        payment:
+          type: string
+        status:
+          type: string
+          enum: 
+            - placed
+            - cancelled
+            - fulfilled
+            - returned
+            - exchanged
+
 
     ProductSchema:
       type: object
@@ -413,10 +356,10 @@ components:
         stock:
           type: number
           example: '12'
-        vendor:
+        user:
           type: string
           example: "00a6fa25"
-        productImages:
+        orderImages:
           type: array
           items: 
             type: string
@@ -425,13 +368,11 @@ components:
         - category
         - name
         - description
-        - vendor
+        - user
         - stock
 
 
     UserSchema:
-      type: array
-      items: 
         type: object
         properties:
           uuid:
@@ -463,8 +404,22 @@ components:
           role:
             type: string
             enum: 
-            - user
-            - super admin
             - vendor
-            - 
-            default: vendor
+            - super admin
+            - user
+            - deliveryPartner
+            - deliveryPerson
+            default: user
+
+    
+    PaymentSchema:
+      type: object
+      properties:
+        total:
+          type: number
+        method:
+          type: string
+          enum:
+            - cash
+            - UPI
+            - NetBanking
