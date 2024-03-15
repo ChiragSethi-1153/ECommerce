@@ -5,20 +5,19 @@ info:
   version: "1.0.0"
   # description:
 servers:
-  - url: http://localhost:8085
+  - url: http://localhost:8082
 paths:
-  /access:
+  /role/{roleId}:
     get:
       tags:
-        - Acces Control
+        - Access Control
       summary: Checking access of users
       description: Getting access list of all users
       parameters:
-        - name: 'role'
-          in: query
+        - name: 'roleId'
+          in: path
           required: true
           description: check for access rights of a user
-          example: "vendor"
           schema:
             type: string 
         - name: 'number'
@@ -52,4 +51,112 @@ paths:
                   error:
                     type: string
                     example: server not working
+
+  /role:
+    post:
+      tags:
+        - Access Control
+      summary: Creating new role
+      description: Creating new role by admin
+      parameters:
+        - name: 'role'
+          in: query
+          required: true
+          description: name/title of role 
+          schema:
+            type: string 
+      requestBody:
+        description: Request for creating new role
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleSchemaRequest'
+        required: true
+        
+      responses:
+        '201':
+          description: Role created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleSchema'
+
+        '401':
+            description: Not authorized
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: Not authorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working   
+
+    get:
+      tags:
+        - Access Control
+      summary: Checking access of users
+      description: Getting list of all roles
+
+      responses:
+        '200':
+          description: get all roles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleSchema'
+
+        '401':
+            description: Not authorized
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                      example: Not authorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: server not working
+
+
+
+
+components:
+  schemas:
+    
+    RoleSchema:
+      type: object
+      properties:
+        uuid: 
+          type: string
+        title: 
+          type: string
+        accessRights: 
+          type: array
+
+    RoleSchemaRequest:
+      type: array
+      items:
+        type: number
+
+
 

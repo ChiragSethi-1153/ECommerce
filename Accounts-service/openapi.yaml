@@ -7,68 +7,22 @@ info:
 servers:
   - url: http://localhost:8080
 paths:
-  /auth/signup:
-    post:
+
+  /users:
+    post: 
       tags:
         - Accounts
-      summary: Create a new user
-      description: Creates a new user
-      requestBody:
-        description: Request to create User. Name Email & password are required fields
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserSchemaSignup'
-        required: true
+      summary: Creating new user
+      description: Creating new user 
       responses:
         '201':
-          description: User created successfully
+          description: user created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserSchemaSignup'
-        '409':
-            description: Bad Request/User already exists! Login instead
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      example: User already exists! Login instead
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: server not working
-  /auth/login:
-    post:
-      tags:
-        - Accounts
-      summary: Login for existing user
-      description: User can login in its account
-      requestBody:
-        description: Request to match details of user with database
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserSchemaLogin'
-        required: true
-      responses:
-        '200':
-          description: LoggedIn successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserSchemaLogin'
+                $ref: '#/components/schemas/UserSchemaResponses'
         '404':
-            description: User not found/Email doesn't exist 
+            description: Users
             content:
               application/json:
                 schema:
@@ -76,17 +30,7 @@ paths:
                   properties:
                     error:
                       type: string
-                      example: User doesn't exists! Signup instead
-        '400':
-          description: Invalid Password
-          content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    error:
-                      type: string
-                      example: Invalid Email/Password
+                      example: User doesn't exists
         '500':
           description: Internal server error
           content:
@@ -97,8 +41,8 @@ paths:
                   error:
                     type: string
                     example: server not working
-  
-  /users:
+
+
     get:
       tags:
         - Accounts
@@ -192,6 +136,68 @@ paths:
                 properties:
                   error:
                     type: string
+    
+    patch:
+      tags:
+        - Accounts
+      parameters:
+        - name: 'uuid'
+          in: query
+          required: true
+          description: The uuid of user
+          example: "00a6fa25-df29-4701-9077-557932591766"
+          schema:
+            type: string
+      summary: Edit the user status
+      description: Updates the user status
+      requestBody:
+        description: Request to edit user status body doesn't contain email and password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserStatusEdit'
+        required: true
+      responses:
+        '200':
+          description: User status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User status edited successfully.
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: The provided uuid is not valid, 1234 
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    
   
   /users/{uuid}:
     get:
@@ -294,6 +300,7 @@ paths:
 
 components:
   schemas:
+  
     UserSchema:
       type: object
       properties:
@@ -339,36 +346,6 @@ components:
       required:
         - uuid
         - name
-        - email
-        - password
-
-    UserSchemaSignup:
-      type: object
-      properties:
-        name:
-          type: string
-          example: "name"
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-      required:
-        - name
-        - email
-        - password
-
-    UserSchemaLogin:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-      required:
         - email
         - password
 
@@ -476,5 +453,16 @@ components:
           type: string
         profileImage:
           type: string
+
+    UserStatusEdit:
+      type: object
+      properties:
+        uuid:
+          type: string
+        status:
+          type: string
+          enum:
+            - Active
+            - Deactivated
 
             

@@ -2,9 +2,9 @@ asyncapi: 2.6.0
 
 #Info of the application
 info:
-  title: E-Commerce Users Microservice
+  title: E-Commerce Auth Microservice
   version: '1.0'
-  description:  E-Commerce Users Microservice
+  description:  E-Commerce Auth Microservice
 
 #servers:
 #  development:
@@ -21,8 +21,24 @@ info:
 #    description: Production RabbitMQ
 
 channels:
-  users.user_data:
+  auth.user_data:
     publish:
+      description: publish user details 
+      summary: Inform about a new user
+      # operationId: SurveyRequestBooked
+      message:
+        $ref: "#/components/messages/UserRegistered"
+  
+  auth.edit_password_data:
+    publish:
+      description: edit user password
+      summary: inform about password change
+      # operationId: SurveyRequestBooked
+      message:
+        $ref: "#/components/messages/EditPasswordDetails"
+
+  users.user_data:
+    subscribe:
       description: add user details 
       summary: Inform about a user creation
       # operationId: SurveyRequestBooked
@@ -30,7 +46,7 @@ channels:
         $ref: "#/components/messages/UserCreated"
   
   users.user_updated: 
-    publish:
+    subscribe:
       description: add user details 
       summary: Inform about a user creation
       # operationId: SurveyRequestBooked
@@ -38,7 +54,7 @@ channels:
         $ref: "#/components/messages/EditUserDetails"
   
   users.user_deleted:
-    publish:
+    subscribe:
       description: delete user details 
       summary: Inform about a user deletion
       # operationId: SurveyRequestBooked
@@ -46,33 +62,52 @@ channels:
         $ref: "#/components/messages/DeleteUserDetails"
 
   users.user_restored:
-    publish:
+    subscribe:
       description: Restore user details 
       summary: Inform about a user restore
       # operationId: SurveyRequestBooked
       message:
         $ref: "#/components/messages/RestoreUserDetails"
-  
-  auth.user_data:
-    subscribe:
-      description: user details 
-      summary: Inform about a new user
-      # operationId: SurveyRequestBooked
-      message:
-        $ref: "#/components/messages/UserRegistered"
-  
-  auth.edit_password_data:
-    subscribe:
-      description: edit user password
-      summary: inform about password change
-      # operationId: SurveyRequestBooked
-      message:
-        $ref: "#/components/messages/EditPasswordDetails"
-
 
 components:
   messages:
+    
+    UserRegistered:
+      name: New user
+      title: New user has registered
+      contentType: application/json
+      summary: Inform new user registration
+      payload:
+        type: object
+        description: details of the user
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          user_details:
+            $ref: '#/components/schemas/AuthDetailsPayload'
 
+    EditPasswordDetails:
+      name: Edit user details
+      title: Edit user details
+      payload:
+        type: object
+        description: details of the user
+        properties:
+          uuid:
+            type: string
+            description: Unique ID for the Object
+          fired_at:
+            type: string
+            format: date-time
+            description: Date that the event was fired
+          user_details:
+            $ref: '#/components/schemas/EditPasswordPayload'
+    
     UserCreated:
       name: New user
       title: New user has registered
@@ -143,46 +178,11 @@ components:
             description: Date that the event was fired
           user_details:
             $ref: '#/components/schemas/DeleteUserPayload'
-    
-    UserRegistered:
-      name: New user
-      title: New user has registered
-      contentType: application/json
-      summary: Inform new user registration
-      payload:
-        type: object
-        description: details of the user
-        properties:
-          uuid:
-            type: string
-            description: Unique ID for the Object
-          fired_at:
-            type: string
-            format: date-time
-            description: Date that the event was fired
-          user_details:
-            $ref: '#/components/schemas/AuthDetailsPayload'
 
-    EditPasswordDetails:
-      name: Edit user details
-      title: Edit user details
-      payload:
-        type: object
-        description: details of the user
-        properties:
-          uuid:
-            type: string
-            description: Unique ID for the Object
-          fired_at:
-            type: string
-            format: date-time
-            description: Date that the event was fired
-          user_details:
-            $ref: '#/components/schemas/EditPasswordPayload'
 
-  schemas:
-   
-    UserSchema: 
+
+  schemas:   
+    AuthDetailsPayload: 
       type: object
       properties:
         uuid:
@@ -194,34 +194,10 @@ components:
         email:
           type: string
           format: email
-        address:
-          type: array
-          items: 
-            type: object
-            properties:
-              area: 
-                type: string
-              city:
-                type: string
-              state:
-                type: string
-              pincode:
-                type: string
-        phone:
+        password: 
           type: string
-        profileImage:
-          type: array
-          items: 
-            type: string
         role:
           type: string
-          enum:
-             - superAdmin
-             - deliveryPartner
-             - user
-             - vendor
-             - deliveryPerson
-          default: user
       required:
         - uuid
         - name
@@ -229,32 +205,15 @@ components:
         - password
         - role   
 
-    EditUserDetailsPayload:
+    EditPasswordPayload:
       type: object
       properties:
-        name:
+        uuid:
           type: string
-          example: "name"
-        address:
-          type: array
-          items: 
-            type: object
-            properties:
-              area: 
-                type: string
-              city:
-                type: string
-              state:
-                type: string
-              pincode:
-                type: string
-        phone:
+        newPassword:
           type: string
-        profileImage:
-          type: array
-          items: 
-            type: string
-        
+
+
     UserDetailsPayload:
       type: object
       properties:
@@ -305,35 +264,3 @@ components:
         status:
           type: string
           default: Active
-
-
-    AuthDetailsPayload: 
-      type: object
-      properties:
-        uuid:
-          type: string
-          example: "00a6fa25-df29-4701-9077-557932591766"
-        name:
-          type: string
-          example: "name"
-        email:
-          type: string
-          format: email
-        password: 
-          type: string
-        role:
-          type: string
-      required:
-        - uuid
-        - name
-        - email
-        - password
-        - role   
-
-    EditPasswordPayload:
-      type: object
-      properties:
-        uuid:
-          type: string
-        newPassword:
-          type: string
