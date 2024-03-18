@@ -12,7 +12,10 @@ const cartSchema = new mongoose.Schema({
     product: [{
         type: String,
 
-    }]
+    }],
+    totalPrice: {
+        type: Number,
+    }
     
 })
 

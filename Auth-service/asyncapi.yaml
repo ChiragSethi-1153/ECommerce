@@ -196,6 +196,7 @@ components:
           format: email
         password: 
           type: string
+          format: password
         role:
           type: string
       required:

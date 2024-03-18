@@ -2,13 +2,13 @@
 const Users = require('../model/users')
 const bcrypt = require('bcryptjs')
 const uuid = require('uuid')
+const { sendMsg } = require('../worker/producer')
 
 exports.signup = async (req) => {
     try{
     console.log(req.body)
     const {name, email, password, role} = req.body;
    
-    
     const existingUser = await Users.findOne({email: email});
       
     if(existingUser){
@@ -17,16 +17,28 @@ exports.signup = async (req) => {
 
     const hashedPassword = bcrypt.hashSync(password)
 
-    const user = new Users({
-        uuid: uuid.v1(),
+    const uuidnew = uuid.v1()
+    const users = {
+        uuid: uuidnew,
         name,
         email,
         password: hashedPassword,
         role: role
-    });
+    };
 
-        await user.save();
-        return user
+    sendMsg(process.env.RABBIT_PUBLISH_USER_DETAILS, users)
+
+    // const user = new Users({
+    //     uuid,
+    //     name,
+    //     email,
+    //     password: hashedPassword,
+    //     role: role
+    // });
+
+
+        // await user.save();
+        return users
     }
     catch(err) {
         console.log(err)

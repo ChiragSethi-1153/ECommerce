@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     uuid: {
         type: String,
         required: true
@@ -44,9 +44,13 @@ const userSchema = mongoose.Schema({
         default: []
     }],
     role: {
+        type: String, // 1: admin, 2: user, 3: vendor
+        required: true
+    },
+    status: {
         type: String,
-        enum: ["user", "admin", "vendor"],
-        default: "user"
+        enum: ["Active", "Deactive"],
+        default: "Active"
     }
 })
 

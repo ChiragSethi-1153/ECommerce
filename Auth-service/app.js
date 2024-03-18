@@ -17,6 +17,9 @@ const cors = require('cors')
 const app = express()
 
 
+const { connect_rabbit_mq } = require('./config/rabbitMQ_connection');
+global.connect_rabbit_mq = connect_rabbit_mq();
+
 require('./config/db')
 
 app.use(cors())

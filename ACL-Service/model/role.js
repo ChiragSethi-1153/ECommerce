@@ -5,6 +5,10 @@ const roleSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    value: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
