@@ -1,4 +1,3 @@
-
 const Users = require('../model/users')
 const bcrypt = require('bcryptjs')
 const uuid = require('uuid')
@@ -22,22 +21,25 @@ exports.signup = async (req) => {
         uuid: uuidnew,
         name,
         email,
-        password: hashedPassword,
         role: role
     };
 
-    sendMsg(process.env.RABBIT_PUBLISH_USER_DETAILS, users)
+    const user = new Users({
+        uuid: uuidnew,
+        name,
+        email,
+        password: hashedPassword,
+        role: role
+    });
+    await user.save();
+    console.log("dwecerc",user);
 
-    // const user = new Users({
-    //     uuid,
-    //     name,
-    //     email,
-    //     password: hashedPassword,
-    //     role: role
-    // });
+    await sendMsg(
+        process.env.RABBIT_PUBLISH_USER_DETAILS, 
+        process.env.RABBIT_PUB_USER_DETAILS_SIGN,
+        users
+        )
 
-
-        // await user.save();
         return users
     }
     catch(err) {
@@ -46,6 +48,22 @@ exports.signup = async (req) => {
     }
 
 }
+
+exports.changeStatus = async(payload) => {
+    try{
+        console.log("⚡⚡",payload)
+        const uuid = payload.uuid
+        const status = payload.status
+        console.log(uuid, status)
+        const change = await Users.findOneAndUpdate({uuid: uuid}, {status: status}, {new: true})
+        console.log(change)
+        return change
+        
+    }catch(err){
+        console.log(err)
+        return err
+    }
+    }
 
 exports.login = async (req, res) => {
     try{

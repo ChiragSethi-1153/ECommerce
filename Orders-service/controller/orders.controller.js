@@ -1,9 +1,9 @@
-const {productService} = require('../service')
+const {orderService} = require('../service')
 
 
-exports.createProduct = async(req, res) => {
+exports.createorder = async(req, res) => {
     try{
-        const response = await productService.createProduct(req);
+        const response = await orderService.createorder(req);
         return res.status(201).json(response)
         
     }catch(err){
@@ -13,11 +13,11 @@ exports.createProduct = async(req, res) => {
 }
 
 
-exports.getproduct = async (req,res) => {
+exports.getorder = async (req,res) => {
     try{
-        const response = await productService.getProduct(req);
+        const response = await orderService.getorder(req);
         if(response === 404){
-            return res.status(404).json({message: "product Not Found"})
+            return res.status(404).json({message: "order Not Found"})
         }
         else{
             return res.status(200).json(response)
@@ -29,11 +29,11 @@ exports.getproduct = async (req,res) => {
     }
 }
 
-exports.editproduct = async (req, res) => {
+exports.editorder = async (req, res) => {
     try{
-        const response = await productService.editproduct(req)
+        const response = await orderService.editorder(req)
         if(response === 404){
-            return res.status(404).json({message: "No such product"})
+            return res.status(404).json({message: "No such order"})
         }
         else{
             return res.status(200).json(response)
@@ -44,11 +44,11 @@ exports.editproduct = async (req, res) => {
     }
 }
 
-exports.getAllproducts = async (req, res) => {
+exports.getAllorders = async (req, res) => {
     try{
-        const response = await productService.getAllproduct(req)
+        const response = await orderService.getAllorder(req)
         if(response === 404){
-            return res.status(404).json({message: 'No product found'})
+            return res.status(404).json({message: 'No order found'})
         }
         else{
             return res.status(200).json(response)
@@ -59,11 +59,11 @@ exports.getAllproducts = async (req, res) => {
     }
 }
 
-exports.deleteProduct = async (req, res) => {
+exports.deleteorder = async (req, res) => {
     try{
-        const response = await productService.deleteproduct(req)
+        const response = await orderService.deleteorder(req)
         if(response === 404){
-            return res.status(404).json({message: 'No product found'})
+            return res.status(404).json({message: 'No order found'})
         }
         else{
             return res.status(200).json(response)

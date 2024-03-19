@@ -3,7 +3,7 @@ const { verifyToken } = require('../middleware/auth')
 const router = require('express').Router()
 
 
-router.post("/users", verifyToken, userController.createUser)
+router.post("/users", userController.createUser)
 router.get("/users",  verifyToken, userController.getUser)
 
 router.put("/users", verifyToken, userController.editUser)

@@ -1,16 +1,28 @@
 const Users = require("../model/users");
+const { recieveMsg } = require("../worker/consumer");
+const { sendMsg } = require("../worker/producer");
 
 exports.createUser = async (req) => {
     try{
-        const {uuid, name, email, password, role} = req.body
+        console.log(req)
+        const {uuid, name, email, password, role} = req
         const user = await new Users({
             uuid,
             name,
             email,
             password,
-            role
+            role,
+            status: "Active"
         })
+        console.log(user)
         await user.save()
+
+        await sendMsg(
+            process.env.RABBIT_PUBLISH_USER_DETAILS, 
+            process.env.RABBIT_PUB_USER_DETAILS_SIGN,
+            user
+            )
+
         return user
     }catch(err){
         console.log(err)

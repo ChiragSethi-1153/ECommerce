@@ -1,12 +1,18 @@
 const uuid = require('uuid');
-const exchangeName = process.env.RABBIT_EXCHANGE_NAME
-const exchange = process.env.RABBIT_EXCHANGE
+
+const exchangeName = process.env.RABBIT_PUB_EXCHANGE_NAME
+const exchangeType = process.env.RABBIT_EXCHANGE_TYPE
 
 
-exports.sendMsg = async (routing_key, msg) => {
+exports.sendMsg = async (routing_key, signature, msg) => {
     const connection = await global.rabbit_mq_connection;
     const channel = await connection.createChannel();
-    await channel.assertExchange(exchangeName, exchange, {durable: true});
+
+    await channel.assertExchange(exchangeName, exchangeType, {durable: true});
+
+    const properties = {
+      type: signature
+    };
 
     const publish_details = {
         uuid: uuid.v1(),
@@ -14,12 +20,16 @@ exports.sendMsg = async (routing_key, msg) => {
         user_details: msg
       };
 
-    channel.publish(exchangeName,  
+      console.log(publish_details)
+
+    await channel.publish(
+        exchangeName,  
         routing_key, 
         Buffer.from(JSON.stringify(publish_details)),
-        // {persistant: true}
+        properties,
+        {persistant: true}
     );
-    console.log(`This message is sent to exchange ${process.env.RABBIT_EXCHANGE}`);
+    console.log(`This message is sent to exchange ${process.env.RABBIT_PUB_EXCHANGE_NAME}`);
     
   }
 
