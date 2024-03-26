@@ -20,7 +20,7 @@ exports.sendMsg = async (routing_key, signature, msg) => {
         user_details: msg
       };
 
-      console.log(publish_details)
+      console.log("producer: publish details", publish_details)
 
     await channel.publish(
         exchangeName,  

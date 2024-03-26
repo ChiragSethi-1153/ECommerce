@@ -21,7 +21,7 @@ try{
   const channel = await connection.createChannel();
   
   await channel.assertExchange(exchangeName, exchangeType);
-  const q = await channel.assertQueue(queueName,{durable: true})
+  const q = await channel.assertQueue(queueName, {durable: true})
 
   await channel.bindQueue(q?.queue, exchangeName, '');
   

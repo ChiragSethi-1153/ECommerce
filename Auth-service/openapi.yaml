@@ -3,7 +3,7 @@ info:
   title: Auth Microservice
 
   version: "1.0.0"
-  # description:
+  description: Microservice for user authorizations
 servers:
   - url: http://localhost:8082
 paths:
@@ -14,7 +14,7 @@ paths:
       summary: Create a new user
       description: Creates a new user
       requestBody:
-        description: Request to create User. Name Email & password are required fields
+        description: Request to create User
         content:
           application/json:
             schema:
@@ -79,7 +79,7 @@ paths:
                       type: string
                       example: User doesn't exists! Signup instead
         '400':
-          description: Invalid Password
+          description: Invalid credentials
           content:
               application/json:
                 schema:
@@ -87,7 +87,7 @@ paths:
                   properties:
                     error:
                       type: string
-                      example: Invalid Email/Password
+                      example: Invalid Password
         '500':
           description: Internal server error
           content:
@@ -105,14 +105,8 @@ paths:
         - Auth
       summary: Update password for user
       description: Update password for user
-      parameters:
-        - name: 'uuid'
-          in: query
-          required: true
-          description: The uuid of user
-          example: "00a6fa25-df29-4701-9077-557932591766"
-          schema:
-            type: string
+      security:
+      - bearerAuth: ['#/components/securitySchemes/bearerAuth']
       requestBody:
         description: existing password and new password
         content:
@@ -188,7 +182,7 @@ components:
       properties:
         name:
           type: string
-          example: "name"
+          example: "user"
         email:
           type: string
           format: email
@@ -197,6 +191,9 @@ components:
           format: password
         role: 
           type: string
+          enum:
+            - user
+            - vendor
       required:
         - name
         - email
@@ -232,13 +229,21 @@ components:
     UserSchemaLoginResponse:
       type: object
       properties:
+        uuid: 
+          type: string
+          example: ad7dcc90-e9b1-11ee-a1f8-596ad2442ba6
         name: 
           type: string
+          example: user
         email:
           type: string
           format: email
         role: 
           type: string
+          example: user
+        status: 
+          type: string
+          example: Active
 
     PasswordRequest:
       type: object
@@ -247,4 +252,10 @@ components:
           type: string
         newPassword:
           type: string
+    
+  securitySchemes:
+    bearerAuth:  
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
         

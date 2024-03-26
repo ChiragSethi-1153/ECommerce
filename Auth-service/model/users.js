@@ -24,8 +24,9 @@ const userSchema = new mongoose.Schema({
         required: true,
         // minlenght: 8
     },
-    roleId: {
-        type: String
+    role: {
+        type: String,
+        enum: ['user', 'vendor', 'admin']
     },
     status: {
         type: String,

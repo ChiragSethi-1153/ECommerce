@@ -4,7 +4,7 @@ const { sendMsg } = require("../worker/producer");
 
 exports.createUser = async (req) => {
     try{
-        console.log(req)
+        console.log("create user request: ",req)
         const {uuid, name, email, password, role} = req
         const user = await new Users({
             uuid,
@@ -14,7 +14,7 @@ exports.createUser = async (req) => {
             role,
             status: "Active"
         })
-        console.log(user)
+        console.log("created user: ",user)
         await user.save()
 
         await sendMsg(
@@ -35,7 +35,7 @@ exports.getUser = async (req) => {
    
     try{
         const userId = req.id;
-        const user = await Users.findById(userId, "-password")
+        const user = await Users.find({uuid: userId}, "-password")
         if(!user) {
             return 404
         }
@@ -53,12 +53,19 @@ exports.editUser = async (req) => {
     try{
         const userId = req.id
         const {name, address, phone} = req.body
-        const currentUserId = await Users.findById(userId)
+        const currentUserId = await Users.find({uuid: userId})
         if(currentUserId == null){ 
             return 404
         }
         else {
-            const userDetails = await Users.findByIdAndUpdate(userId, {name, address, phone, website, company, summary, headline}, {new: true})
+            const userDetails = await Users.findOneAndUpdate({uuid: userId}, {name, address, phone}, {new: true})
+
+            sendMsg(
+                process.env.RABBIT_PUBLISH_USER_UPDATE, 
+                process.env.RABBIT_PUB_USER_UPDATED_SIGN,
+                userDetails
+            )
+
             return userDetails
         }
 

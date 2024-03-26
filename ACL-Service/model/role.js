@@ -1,24 +1,32 @@
-const mongoose = require("mongoose")
 
-const roleSchema = mongoose.Schema({
-    uuid: {
-        type: String,
-        required: true
+exports.roledb = {
+
+    "user": {
+        "accounts": [3, 4, 6],
+        "product": [2, 3],
+        "orders": [1, 2, 3, 4, 5, 6],
+        "cart": [1, 3, 4, 5],
+        "delivery": [],
     },
-    value: {
-        type: String,
-        required: true
+    "admin": {
+        "accounts": [2, 3, 4, 5, 6],
+        "product": [2, 3, 6],
+        "orders": [2, 3, 4, 5, 6],
+        "cart": [],
+        "delivery": [],
     },
-    title: {
-        type: String,
-        required: true
-    },
-    accessRights: {
-        type: Array,
-        required: true
+    "vendor": {
+        "accounts": [2, 3, 4, 6],
+        "product": [1, 2, 3, 4, 5, 6],
+        "orders": [],
+        "cart": [],
+        "delivery": [],
     }
-})
+}
 
-const Role = mongoose.model('role', roleSchema)
-
-module.exports = Role
+// 1 - post 
+// 2 - get All
+// 3 - get One
+// 4 - put 
+// 5 - patch
+// 6 - delete

@@ -5,9 +5,9 @@ const key = process.env.JWT_KEY
 exports.verifyToken = async (req, res, next) => {
 
     const header = req.headers[`authorization`]
-    console.log(req.headers)
+    console.log("HEADERS", req.headers)
     const token = header.split(" ")[1]
-    console.log(token)
+    console.log("TOKEN", token)
     // console.log(token); 
     if (!token) {
         return res.status(404).json({ message: "No token Found" })

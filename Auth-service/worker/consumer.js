@@ -1,6 +1,6 @@
 const amqp = require('amqplib');
 const { authProcessor } = require('../processor');
-const {changeStatus} = authProcessor
+const {changeStatus, updateUser} = authProcessor
 
 const exchangeName = process.env.RABBIT_SUB_EXCHANGE_NAME
 
@@ -9,7 +9,9 @@ const queueName = process.env.RABBIT_QUEUE_NAME
 
 const processors = {
   [process.env.RABBIT_SUB_USER_DETAILS_SIGN]: changeStatus,
-  // [process.env.RABBIT_SUB_EDIT_PASSWORD_SIGN]: 
+  [process.env.RABBIT_SUB_USER_DELETED_SIGN]: changeStatus,
+  [process.env.RABBIT_SUB_USER_RESTORED_SIGN]: changeStatus,
+  [process.env.RABBIT_SUB_USER_UPDATED_SIGN]: updateUser
 };
 
 exports.recieveMsg = async () => {
@@ -19,7 +21,7 @@ exports.recieveMsg = async () => {
     const channel = await connection.createChannel();
     
     await channel.assertExchange(exchangeName, exchangeType);
-    const q = await channel.assertQueue(queueName,{durable: true})
+    const q = await channel.assertQueue(queueName, {durable: true})
   
     await channel.bindQueue(q?.queue, exchangeName, '');
     
@@ -34,11 +36,11 @@ exports.recieveMsg = async () => {
       if (handle_processor) {
         try {
           const data = JSON.parse(msg?.content?.toString());
-          console.log(data);
+          console.log("Consumer: data: ", data);
           await handle_processor(data);
           channel.ack(msg);
         } catch (error) {
-          console.log(error.message);
+          console.log("error", error.message);
           channel.nack(msg, false, false);
         }
       } else {
