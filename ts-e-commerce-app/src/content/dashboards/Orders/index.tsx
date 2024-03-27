@@ -10,13 +10,14 @@ import {
 } from "@mui/material";
 import React from "react";
 import styles from "./Orders.module.css";
-import BreadCrumHeader from "../Header/BreadCrumHeader";
+import BreadCrumHeader from "../../../components/Header/BreadCrumHeader";
 import { CalendarMonth, CalendarMonthOutlined } from "@mui/icons-material";
 import OrdersBody from "./body";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import OrderTable from "../OrderDetails/table";
 
 const Orders = () => {
   const [status, setStatus] = React.useState("");
@@ -43,15 +44,10 @@ const Orders = () => {
               justifyContent: "center",
             }}
           >
-            <Typography sx={{ display: "flex", alignItems: "center" }}>
-              From
-            </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
+              
               <DatePicker />
             </LocalizationProvider>
-            <Typography sx={{ display: "flex", alignItems: "center" }}>
-              To
-            </Typography>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker />
             </LocalizationProvider>
@@ -80,6 +76,7 @@ const Orders = () => {
       <Box>
         <OrdersBody />
       </Box>
+      
     </Box>
   );
 };

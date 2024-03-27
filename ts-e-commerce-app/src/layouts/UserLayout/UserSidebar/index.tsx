@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -9,11 +10,12 @@ import {ReactComponent as OrdersIcon} from '../../../assets/svg/4.svg'
 import {ReactComponent as CustomersIcon} from '../../../assets/svg/5.svg'
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import './Sidebar.module.css'
+import './UserSidebar.module.css'
 import { Box, ListItem, Typography } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 
-export default function Sidebar() {
+export default function UserSidebar() {
   const [open, setOpen] = React.useState(true);
 
   const activeState = ({ isActive }: { isActive: boolean }) => {
@@ -48,32 +50,42 @@ export default function Sidebar() {
             <Typography sx={{fontFamily: 'Poppins', marginLeft: "10px", fontWeight:'600', fontSize: '24px'}}>InstaDeliver</Typography>
         </ListItem>
 
-      <NavLink to="/vendor/dashboard" style={activeState} >
+        <NavLink to="/" style={activeState} >
+      <ListItemButton>
+
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Home</Typography>
+      </ListItemButton>
+      </NavLink>
+
+      <NavLink to="/" style={activeState} >
       <ListItemButton>
 
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Dashboard</Typography>
+        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Overview</Typography>
       </ListItemButton>
       </NavLink>
 
-      <NavLink to="/vendor/products" style={activeState} >
+      <NavLink to="/" style={activeState} >
 
       <ListItemButton >
         <ListItemIcon>
           <ProductsIcon />
         </ListItemIcon>
-        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >All Products</Typography>
+        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >My Quote</Typography>
       </ListItemButton >
       </NavLink>
 
-      <NavLink to="/vendor/orders" style={activeState} >
+      <NavLink to="/delivery" style={activeState} >
       <ListItemButton onClick={handleClick} >
         <ListItemIcon>
           <OrdersIcon />
         </ListItemIcon>
-        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Orders</Typography>
+        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >My Order</Typography>
         {/* {open ? <ExpandLess /> : <ExpandMore />} */}
       </ListItemButton>
       </NavLink>
@@ -87,15 +99,15 @@ export default function Sidebar() {
           </ListItemButton>
         </List>
       </Collapse> */}
-       <NavLink to="/vendor/customers" style={activeState} >
+       <NavLink to="/" style={activeState} >
       <ListItemButton >
         <ListItemIcon>
           <CustomersIcon />
         </ListItemIcon>
-        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Customers</Typography>
+        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >My Claims</Typography>
       </ListItemButton>
     </NavLink>
-    <NavLink to="/vendor/settings" style={activeState}>
+    <NavLink to="/settings" style={activeState}>
 
       <ListItemButton >
         <ListItemIcon>
@@ -104,7 +116,15 @@ export default function Sidebar() {
         <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Settings</Typography>
       </ListItemButton>
     </NavLink>
-
+    <NavLink to="/" style={activeState}>
+        
+        <ListItemButton >
+          <ListItemIcon>
+            <LogoutIcon sx={{color: "black"}} />
+          </ListItemIcon>
+          <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Address Book</Typography>
+        </ListItemButton>
+      </NavLink>
     <NavLink to="/login" style={activeState}>
         
       <ListItemButton >

@@ -1,8 +1,8 @@
 import { Box, Button, Stack } from '@mui/material'
 import styles from "./AllProducts.module.css"
 import React from 'react'
-import Header from '../Header/Header'
-import BreadCrumHeader from '../Header/BreadCrumHeader'
+import Header from '../../../components/Header/Header'
+import BreadCrumHeader from '../../../components/Header/BreadCrumHeader'
 import CustomButton from '../../../components/Button/CustomButton'
 import Body from './Body'
 import GridViewIcon from '@mui/icons-material/GridView';

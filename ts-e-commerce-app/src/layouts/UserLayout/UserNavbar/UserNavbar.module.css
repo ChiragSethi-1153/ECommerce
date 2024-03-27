@@ -1,0 +1,37 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  border-bottom: 1px solid #e9e9e8;
+}
+
+.searchBox {
+  box-sizing: border-box;
+  background-color: #f7f7f9;
+  padding: 7px;
+  border-radius: 10px;
+  width: 700px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  color: black;
+}
+
+.searchbar {
+  font-family: "Roboto";
+  font-size: 16px !important;
+  padding: 0;
+  width: 100%;
+  color: black !important;
+  font-weight: 600 !important;
+  padding-left: 8px;
+}
+
+
+.searchbar::placeholder {
+    font-family: "Roboto";
+    font-size: 14px !important;
+    color: black !important;
+    font-weight: 600 !important;
+}

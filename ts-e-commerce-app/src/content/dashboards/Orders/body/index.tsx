@@ -48,7 +48,7 @@ export default function OrderList(rows: orderlist) {
             {/* {rows?.map((row) => ( */}
             <TableRow
               // key={row.name}
-            onClick={() => navigate('/orderDetails')}
+            onClick={() => navigate('/vendor/orders/orderdetails')}
             sx={{cursor: 'pointer'}}
             >
               <TableCell padding="checkbox">

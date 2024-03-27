@@ -6,32 +6,70 @@ import AllProducts from './content/dashboards/AllProducts';
 import AddProduct from './content/dashboards/AddProducts';
 import Orders from './content/dashboards/Orders';
 import OrderDetails from './content/dashboards/OrderDetails';
+import Dashboard from './content/dashboards/Dashboard';
+import UserNavbar from './layouts/UserLayout/UserNavbar';
+import Home from './pages/User/Home';
+import UserLayout from './layouts/UserLayout';
+import Shipment from './pages/User/Shipment';
 
 
 const routes: RouteObject[] = [
     {
-        path: '/vendor',
+        path: 'vendor',
         element: <SideBarLayout />,
         children: [
-            // {
-            //     path: '/dashboard',
-            //     element: <SideBarLayout />
-            // },
+            
             {
                 path: 'products',
-                element: <AllProducts />
-            },
-            {
-                path: 'addproduct',
-                element: <AddProduct />
+                element: <AllProducts />,
+                children: [
+                    {
+                        path: 'addproduct',
+                        element: <AddProduct />
+                    },
+                ]
             },
             {
                 path: 'orders',
-                element: <Orders />
+                children: [
+                    {
+                        path:'',
+                        element: <Orders />,
+                    },
+                    {
+                        path: 'orderdetails',
+                        element: <OrderDetails />
+                    },
+                ]
             },
             {
-                path: 'orderdetails',
-                element: <OrderDetails />
+                path: '',
+                element: <Dashboard />,
+                children: [
+                    {
+                        path: 'dashboard',
+                        element: <Dashboard />
+                    }
+                ]
+
+            }
+        ]
+    },
+    {
+        path: '/',
+        element: <UserLayout />,
+        children: [
+            {
+                path: '',
+                element: <Home />
+            }
+            ,{
+                path: 'home',
+                element: <Home />
+            },
+            {
+                path: 'delivery',
+                element: <Shipment />
             }
         ]
     }

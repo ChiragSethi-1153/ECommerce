@@ -15,7 +15,7 @@ const CustomButton = (inputs: inputProps) => {
     color={inputs.color}
     onClick={inputs.handleClick}
     sx={{
-        color: ''
+        color: '',
     }}
     >
         {inputs.title}
