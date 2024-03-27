@@ -8,7 +8,7 @@ const ProductCard = () => {
       <CardContent sx={{display: "flex", flexDirection: "column"}} >
 
         <Stack flexDirection={'row'}>
-            <img src='../../assets/logo192.png'  alt='img' width={'30px'} />
+            <img src={require('../../assets/logo192.png')}  alt='img' width={'30px'} />
             <Stack>
         <Typography>
           Product Name

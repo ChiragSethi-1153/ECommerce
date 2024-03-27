@@ -23,7 +23,7 @@ const AllProducts = () => {
           title={"Add Products"} 
           variant='contained' 
           color='primary'
-          handleClick={(e) => navigate('/vendor/addproduct')}
+          handleClick={(e) => navigate('/vendor/products/addproduct')}
           ></CustomButton>
         <Button><GridViewIcon /></Button>
         <Button><ViewListIcon /></Button>

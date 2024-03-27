@@ -21,8 +21,11 @@ const routes: RouteObject[] = [
             
             {
                 path: 'products',
-                element: <AllProducts />,
                 children: [
+                    {
+                        path: '',
+                        element: <AllProducts />
+                    },
                     {
                         path: 'addproduct',
                         element: <AddProduct />
