@@ -11,8 +11,8 @@ function PaymentInfoCard() {
                     <Box className='image' width={'40px'} height={'20px'}><img src={MasterCard} alt="" width={'23px'} /></Box>
                     <Box sx={{ color: '#4E4E4C', fontSize: '15px' }}>Master Card **** **** 6558</Box>
                 </Stack>
-                <Box sx={{ color: '#4E4E4C', fontSize: '15px' }}>Business name: Shistri Singh</Box>
-                <Box sx={{ color: '#4E4E4C', fontSize: '15px' }}>Phone: +91 9286272763</Box>
+                <Box sx={{ color: '#4E4E4C', fontSize: '15px' }}>Business name: user</Box>
+                <Box sx={{ color: '#4E4E4C', fontSize: '15px' }}>Phone: 123456677</Box>
             </Stack>
         </Stack>
     )

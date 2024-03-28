@@ -1,24 +1,55 @@
 import {
   Box,
-  FormControl,
-  InputLabel,
   Paper,
-  Select,
   Stack,
   Typography,
-  SelectChangeEvent,
-  MenuItem,
   InputBase,
   Button,
 } from "@mui/material";
-import React from "react";
-import CustomButton from "../../components/Button/CustomButton";
+import React, { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { loginUsers } from "../../features/Auth/authAction";
+import SimpleSnackbar from "../../components/Snackbar";
+
+
+
+type loginType = {
+  email: String,
+  password: String,
+}
+
 
 const LoginPage = () => {
-  const [role, setRole] = React.useState("");
+  
+  const [user, setUser] = useState<loginType>({
+    email: "",
+    password: "",
+  });
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setRole(event.target.value as string);
+
+  const dispatch = useAppDispatch()
+
+  const loggedin = useAppSelector((state) => state?.login?.content)
+  const loading = useAppSelector((state) => state?.login?.isLoading)
+  const error = useAppSelector((state) => state?.login?.error)
+
+  console.log(loggedin)
+
+  // if(error){
+  //   console.log(error)
+  //   return(
+  //     <>
+  //       <SimpleSnackbar message={"Some Error Occurred. Try Again Later"}  />
+  //     </>
+  //   )
+    
+  // }
+
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    console.log(user)
+    dispatch(loginUsers(user))  
   };
 
   return (
@@ -70,6 +101,8 @@ const LoginPage = () => {
           <InputBase
             placeholder="Email"
             type="email"
+            value={user?.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
             sx={{
               border: "1px solid #e5e7eb",
               bgcolor: "#faf9fb",
@@ -86,6 +119,8 @@ const LoginPage = () => {
           <InputBase
             placeholder="Password"
             type="password"
+            value={user?.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             sx={{
               border: "1px solid #e5e7eb",
               bgcolor: "#faf9fb",
@@ -97,7 +132,7 @@ const LoginPage = () => {
           />
 
           <Button
-            onClick={() => {}}
+            onClick={(e) => {handleClick(e)}}
             color="primary"
             variant="contained"
             sx={{

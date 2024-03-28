@@ -81,8 +81,8 @@ function OrderDetailsbody() {
         <OrderInfoCard
           icon={<PersonOutlinedIcon sx={{ fontSize: "35px" }} />}
           header={"Customer"}
-          line1={"Full Name : Shisti@gmail.com"}
-          line2={" Name : Shisti@gmail.com"}
+          line1={"Full Name : user@gmail.com"}
+          line2={" Name : user@gmail.com"}
           line3={"Phone : 9324292424"}
         />
         <OrderInfoCard
@@ -95,9 +95,9 @@ function OrderDetailsbody() {
         <OrderInfoCard
           icon={<ShoppingBagOutlinedIcon sx={{ fontSize: "35px" }} />}
           header={"Deliver to"}
-          line1={"Address: Dharam Colony"}
-          line2={"Palam Vihar, Gurgaon,"}
-          line3={"Harayana"}
+          line1={"Address: line1"}
+          line2={"Address: line2"}
+          line3={"Address: line3"}
         />
       </Box>
       <Stack direction={"row"} gap={2} marginTop={2}>

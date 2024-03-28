@@ -93,7 +93,16 @@ exports.login = async (req, res) => {
             expiresIn: "12hr"
         });
         console.log("Generated Token\n", token);
-        return {existingUser, token}
+
+        const data = {
+            uuid: existingUser?.uuid,
+            name: existingUser?.name,
+            email: existingUser?.email,
+            role: existingUser?.role,
+            status: existingUser?.status,
+        }
+        return {data, token}
+    
     } catch(err){
         console.log(err)
         return new Error(err);

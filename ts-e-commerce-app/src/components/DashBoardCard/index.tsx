@@ -20,11 +20,11 @@ const DashboardTopCard = (props: props) => {
             <Stack direction={'row'} justifyContent={'space-between'}>
                 <Stack direction={'row'} gap={1} alignItems={'center'}>
                     <Box>{props.icon}</Box>
-                    <Box fontWeight={'700'}>Rs 126.500</Box>
+                    <Box fontWeight={'700'}>Price</Box>
                 </Stack>
-                <Stack direction={'row'} alignItems={'center'}><ArrowUpwardIcon /> 33.5</Stack>
+                <Stack direction={'row'} alignItems={'center'}><ArrowUpwardIcon /> increase</Stack>
             </Stack>
-            <Stack alignItems={'end'} fontSize={'14px'}>Compared to Oct 2023</Stack>
+            <Stack alignItems={'end'} fontSize={'14px'}>date</Stack>
         </Stack>
     )
 }

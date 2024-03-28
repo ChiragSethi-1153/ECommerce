@@ -17,15 +17,15 @@ const SideGraph = () => {
             </Stack>
             <Divider />
             <LineChart
-                xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                xAxis={[{ data: [2, 1, 4, 9, 8, 10] }]}
                 series={[
                     {
                         data: [2, 5.5, 2, 8.5, 1.5, 5],
                         area: true,
                     },
                 ]}
-                sx={{ width: '100%' }}
-                height={300}
+                sx={{ width: '100%', color: 'black' }}
+                height={200}
             />
         </Stack>
     )

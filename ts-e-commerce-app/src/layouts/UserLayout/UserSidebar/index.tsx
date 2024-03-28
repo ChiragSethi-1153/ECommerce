@@ -60,7 +60,7 @@ export default function UserSidebar() {
       </ListItemButton>
       </NavLink>
 
-      <NavLink to="/" style={activeState} >
+      <NavLink to="/s" style={activeState} >
       <ListItemButton>
 
         <ListItemIcon>
@@ -70,7 +70,7 @@ export default function UserSidebar() {
       </ListItemButton>
       </NavLink>
 
-      <NavLink to="/" style={activeState} >
+      <NavLink to="/s" style={activeState} >
 
       <ListItemButton >
         <ListItemIcon>
@@ -99,7 +99,7 @@ export default function UserSidebar() {
           </ListItemButton>
         </List>
       </Collapse> */}
-       <NavLink to="/" style={activeState} >
+       <NavLink to="/s" style={activeState} >
       <ListItemButton >
         <ListItemIcon>
           <CustomersIcon />
@@ -116,7 +116,7 @@ export default function UserSidebar() {
         <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Settings</Typography>
       </ListItemButton>
     </NavLink>
-    <NavLink to="/" style={activeState}>
+    <NavLink to="/s" style={activeState}>
         
         <ListItemButton >
           <ListItemIcon>
