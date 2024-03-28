@@ -11,9 +11,19 @@ import UserNavbar from './layouts/UserLayout/UserNavbar';
 import Home from './pages/User/Home';
 import UserLayout from './layouts/UserLayout';
 import Shipment from './pages/User/Shipment';
+import SignupPage from './pages/Signup';
+import LoginPage from './pages/Login';
 
 
 const routes: RouteObject[] = [
+    {
+        path: 'signup',
+        element: <SignupPage />
+    },
+    {
+        path: 'login',
+        element: <LoginPage />
+    },
     {
         path: 'vendor',
         element: <SideBarLayout />,

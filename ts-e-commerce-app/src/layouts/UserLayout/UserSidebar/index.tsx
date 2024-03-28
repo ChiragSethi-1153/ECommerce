@@ -56,7 +56,7 @@ export default function UserSidebar() {
         <ListItemIcon>
           <HomeIcon />
         </ListItemIcon>
-        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Home</Typography>
+        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}}> Home </Typography>
       </ListItemButton>
       </NavLink>
 
@@ -66,7 +66,7 @@ export default function UserSidebar() {
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Overview</Typography>
+        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}}> Overview </Typography>
       </ListItemButton>
       </NavLink>
 
@@ -76,7 +76,7 @@ export default function UserSidebar() {
         <ListItemIcon>
           <ProductsIcon />
         </ListItemIcon>
-        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >My Quote</Typography>
+        <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}}>My Quote</Typography>
       </ListItemButton >
       </NavLink>
 
@@ -120,7 +120,7 @@ export default function UserSidebar() {
         
         <ListItemButton >
           <ListItemIcon>
-            <LogoutIcon sx={{color: "black"}} />
+          <OrdersIcon />
           </ListItemIcon>
           <Typography sx={{fontFamily: 'Poppins', fontWeight:'400'}} >Address Book</Typography>
         </ListItemButton>

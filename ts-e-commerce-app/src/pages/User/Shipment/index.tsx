@@ -4,6 +4,7 @@ import styles from './Shipment.module.css'
 import Header from '../../../components/Header/Header'
 import DeliveryStepper from './Stepper'
 import ShipmentTable from './ShipmentTable'
+import ShipmentLocation from './ShipmentLocation'
 
 const Shipment = () => {
   return (
@@ -22,6 +23,7 @@ const Shipment = () => {
       <ShipmentTable />
     </Grid>
     <Grid item xs={4}>
+      <ShipmentLocation />
     </Grid>
     </Grid>
 
