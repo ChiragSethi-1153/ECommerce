@@ -5,6 +5,6 @@ const router = require('express').Router()
 
 // router.post("/roles", verifyToken, aclController)
 // router.get("/roles",  verifyToken, aclController)
-router.get('/roles', aclController.getRole)
+router.post('/roles', aclController.getRole)
 
 module.exports = router 

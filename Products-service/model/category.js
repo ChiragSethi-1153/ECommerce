@@ -4,9 +4,13 @@ const categorySchema = new mongoose.Schema({
     uuid: {
         type: String
     },
-    category: {
+    categoryName: {
         type: String
     },
+    categoryImage: [{
+        type: String,
+        default: [] 
+    }],
     subCategories: [{
         type: String
     }]

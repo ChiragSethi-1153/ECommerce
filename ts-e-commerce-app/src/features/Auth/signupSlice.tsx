@@ -5,14 +5,30 @@ import type { RootState } from '../../app/store'
 
 type initialStateProps = {
     isLoading: boolean
-    content: []
+    content: {
+        message: String;
+        response: {
+            email: String;
+            name: String;
+            role: String;
+            uuid: String;
+        }
+      };
     error: Object | null
 }
 
 const initialState : initialStateProps = {
     isLoading: false,
     error:  null,
-    content: []
+    content: {
+        message: '',
+        response: {
+            email: '',
+            name: '',
+            role: '',
+            uuid: '',
+        }
+      }
 }
 
 

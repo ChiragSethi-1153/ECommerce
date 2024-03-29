@@ -2,6 +2,8 @@ import { Box, Stack, Typography } from '@mui/material'
 import React from 'react'
 import styles from './Ad.module.css'
 import Carousel from 'react-material-ui-carousel'
+import Carousel2 from '../../assets/CAROUSEL2.png'
+import Carousel3 from '../../assets/CAROUSEL3.png'
 import { Paper, Button } from '@mui/material'
 
 const Advertisement = () => {
@@ -10,24 +12,16 @@ const Advertisement = () => {
         
         <Carousel autoPlay className={styles.carousel} >
             {/* map */}
-                <Stack className={styles.carouselImage}>
-                  
-                <Typography color={'white'} >Give the gift of Insta</Typography>
-                <Typography color={'white'}>The gift that keeps on giving</Typography>
-                <Stack direction={'row'}>
-                  <Button variant='contained' sx={{bgcolor: 'white', color: '#750146', borderRadius:'50px'}}>Shop now</Button>
-                  <Button sx={{color: '#fff', bgcolor: 'none'}}>Terms Apply</Button>
-                </Stack>
+                <Stack>
+
+                <img src={Carousel2}  />  
+                
                 </Stack>
 
-                <Stack className={styles.carouselImage}>
-                  
-                <Typography color={'white'} >Give the gift of Insta</Typography>
-                <Typography color={'white'}>The gift that keeps on giving</Typography>
-                <Stack direction={'row'}>
-                  <Button variant='contained' sx={{bgcolor: 'white', color: '#750146', borderRadius:'50px'}}>Shop now</Button>
-                  <Button sx={{color: '#fff', bgcolor: 'none'}}>Terms Apply</Button>
-                </Stack>
+                <Stack>
+
+                <img src={Carousel3}  />  
+                
                 </Stack>
          
         </Carousel>

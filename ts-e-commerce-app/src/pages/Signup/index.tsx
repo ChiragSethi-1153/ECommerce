@@ -13,7 +13,8 @@ import {
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUsers } from "../../features/Auth/authAction";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useNavigate } from "react-router-dom";
 
 type signupType = {
   role: String;
@@ -30,13 +31,30 @@ const SignupPage = () => {
     password: "",
   });
 
-  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
 
-    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault()
-      console.log(user)
-      dispatch(registerUsers(user))  
-    };
+  const navigateLogin = async (e: React.MouseEvent<HTMLSpanElement>) => {
+    navigate("/login");
+  };
+
+  const dispatch = useAppDispatch();
+
+  const signup = useAppSelector((state) => state?.signup?.content)
+  const error = useAppSelector((state) => state?.signup?.error)
+
+  const message = signup?.message
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(user);
+    dispatch(registerUsers(user));
+    if(error){
+      window.alert("some error occcured try again later")
+    }
+    else{
+      navigate('/login')
+    }
+  };
 
   return (
     <Box
@@ -80,6 +98,9 @@ const SignupPage = () => {
           <Typography sx={{ fontSize: "20px", fontWeight: "bold", mb: 4 }}>
             Create your Free Account
           </Typography>
+
+          <Box component={"form"} onSubmit={(e) => handleSubmit(e)}>
+
           <FormControl sx={{ mb: 3, width: "90%" }}>
             <InputLabel>
               <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
@@ -92,10 +113,11 @@ const SignupPage = () => {
               value={user?.role}
               label={"Select Your Role"}
               onChange={(e) => setUser({ ...user, role: e.target.value })}
+              required
               sx={{
                 bgcolor: "#faf9fb",
               }}
-            >
+              >
               <MenuItem value={"user"}>User</MenuItem>
               <MenuItem value={"vendor"}>Vendor</MenuItem>
             </Select>
@@ -107,6 +129,7 @@ const SignupPage = () => {
           <InputBase
             placeholder="Name"
             type="text"
+            required
             value={user.name}
             onChange={(e) => setUser({ ...user, name: e.target.value })}
             sx={{
@@ -117,7 +140,7 @@ const SignupPage = () => {
               p: "5px 10px",
               mb: 3,
             }}
-          />
+            />
 
           <Typography sx={{ fontSize: "16px", fontWeight: "bold", mb: 1 }}>
             Your Email
@@ -125,6 +148,7 @@ const SignupPage = () => {
           <InputBase
             placeholder="Email"
             type="email"
+            required
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             sx={{
@@ -135,7 +159,7 @@ const SignupPage = () => {
               p: "5px 10px",
               mb: 3,
             }}
-          />
+            />
 
           <Typography sx={{ fontSize: "16px", fontWeight: "bold", mb: 1 }}>
             Password
@@ -143,6 +167,7 @@ const SignupPage = () => {
           <InputBase
             placeholder="Password"
             type="password"
+            required
             value={user.password}
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             sx={{
@@ -153,12 +178,22 @@ const SignupPage = () => {
               p: "5px 10px",
               mb: 3,
             }}
-          />
+            />
 
-          <Button
-            onClick={(e) => handleSubmit(e)}
+          <Typography sx={{ mb: 1 }}>
+            Already have an account?{" "}
+            <span
+              onClick={(e) => navigateLogin(e)}
+              style={{ cursor: "pointer", color: "#4f80e1" }}
+              >
+              Login
+            </span>
+          </Typography>
+
+          <Button 
             color="primary"
             variant="contained"
+            type="submit"
             sx={{
               textTransform: "none",
               borderRadius: "10px",
@@ -168,9 +203,10 @@ const SignupPage = () => {
               boxShadow: "none",
               mb: 4,
             }}
-          >
+            >
             Create Account
           </Button>
+        </Box>
         </Stack>
       </Paper>
     </Box>

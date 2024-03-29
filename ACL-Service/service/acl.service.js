@@ -24,6 +24,7 @@ const uuid = require("uuid")
 exports.getRole = async (req) => {
    
     try{
+        console.log(req.body)
         const { role, service, access } = req.body;
         console.log(role, service, access)
 

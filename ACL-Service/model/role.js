@@ -5,12 +5,14 @@ exports.roledb = {
         "accounts": [3, 4, 6],
         "product": [2, 3],
         "orders": [1, 2, 3, 4, 5, 6],
+        "category": [2, 3],
         "cart": [1, 3, 4, 5],
         "delivery": [],
     },
     "admin": {
         "accounts": [2, 3, 4, 5, 6],
         "product": [2, 3, 6],
+        "category": [1, 2, 3, 4, 5, 6],
         "orders": [2, 3, 4, 5, 6],
         "cart": [],
         "delivery": [],
@@ -18,6 +20,7 @@ exports.roledb = {
     "vendor": {
         "accounts": [2, 3, 4, 6],
         "product": [1, 2, 3, 4, 5, 6],
+        "category": [2, 3],
         "orders": [],
         "cart": [],
         "delivery": [],

@@ -10,31 +10,32 @@ import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { loginUsers } from "../../features/Auth/authAction";
 import SimpleSnackbar from "../../components/Snackbar";
-
-
+import { useNavigate } from "react-router-dom";
 
 type loginType = {
-  email: String,
-  password: String,
-}
-
+  email: String;
+  password: String;
+};
 
 const LoginPage = () => {
-  
-  const [user, setUser] = useState<loginType>({
+  const [input, setInput] = useState<loginType>({
     email: "",
     password: "",
   });
 
+  const navigate = useNavigate();
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  const loggedin = useAppSelector((state) => state?.login?.content)
-  const loading = useAppSelector((state) => state?.login?.isLoading)
-  const error = useAppSelector((state) => state?.login?.error)
+  const loggedin = useAppSelector((state) => state?.login?.content);
+  const loading = useAppSelector((state) => state?.login?.isLoading);
+  const error = useAppSelector((state) => state?.login?.error);
+  const isLoggedIn = useAppSelector((state) => state?.login?.isLoggedIn);
 
-  console.log(loggedin)
-
+  const role = loggedin?.user?.role;
+  const token = loggedin?.token;
+  const status = loggedin?.user?.status;
+  const message = loggedin?.message;
   // if(error){
   //   console.log(error)
   //   return(
@@ -42,14 +43,28 @@ const LoginPage = () => {
   //       <SimpleSnackbar message={"Some Error Occurred. Try Again Later"}  />
   //     </>
   //   )
-    
+
   // }
 
+  const navigateSignup = async (e: React.MouseEvent<HTMLSpanElement>) => {
+    navigate('/signup')
+  }
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    console.log(user)
-    dispatch(loginUsers(user))  
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log(input);
+    await dispatch(loginUsers(input));
+    if (isLoggedIn && role === "user" && status === "Active" && token !== "") {
+      navigate("/");
+    }
+    if (
+      isLoggedIn &&
+      role === "vendor" &&
+      status === "Active" &&
+      token !== ""
+    ) {
+      navigate("/vendor/dashboard");
+    }
   };
 
   return (
@@ -101,8 +116,8 @@ const LoginPage = () => {
           <InputBase
             placeholder="Email"
             type="email"
-            value={user?.email}
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
+            value={input?.email}
+            onChange={(e) => setInput({ ...input, email: e.target.value })}
             sx={{
               border: "1px solid #e5e7eb",
               bgcolor: "#faf9fb",
@@ -119,8 +134,8 @@ const LoginPage = () => {
           <InputBase
             placeholder="Password"
             type="password"
-            value={user?.password}
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            value={input?.password}
+            onChange={(e) => setInput({ ...input, password: e.target.value })}
             sx={{
               border: "1px solid #e5e7eb",
               bgcolor: "#faf9fb",
@@ -130,9 +145,19 @@ const LoginPage = () => {
               mb: 3,
             }}
           />
-
+          <Typography sx={{ mb: 1 }}>
+            Don't have an account?{" "}
+            <span
+              onClick={(e) => navigateSignup(e)}
+              style={{ cursor: "pointer", color: "#4f80e1" }}
+            >
+              Sign Up
+            </span>
+          </Typography>
           <Button
-            onClick={(e) => {handleClick(e)}}
+            onClick={(e) => {
+              handleClick(e);
+            }}
             color="primary"
             variant="contained"
             sx={{

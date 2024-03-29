@@ -8,7 +8,7 @@ exports.signup = async (req, res) => {
             return res.status(409).json({message: 'User already exists! Login instead'})
         }
         else{
-            return res.status(201).json(response)
+            return res.status(201).json({message: 'Signed up successfully', response})
         }
     }
     catch(err) {

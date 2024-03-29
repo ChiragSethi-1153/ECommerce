@@ -1,8 +1,5 @@
 const mongoose = require('mongoose')
 
-
-
-
 const productSchema = new mongoose.Schema({
     uuid: {
         type: String
@@ -20,7 +17,16 @@ const productSchema = new mongoose.Schema({
         type: String
     },
     vendor: {
-        type: String
+        type: Object,
+        name: {
+            type: String
+        },
+        uuid: {
+            type: String
+        },
+        email: {
+            type: String
+        }
     },
     productImages: [{
         type: String,

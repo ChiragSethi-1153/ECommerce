@@ -7,7 +7,7 @@ const AddProduct = () => {
   return (
     <>
     <Stack p={4} sx={{ backgroundColor: 'rgb(246, 248, 255)' }} >
-        <BreadCrumHeader header={"All Products"} subheader={[]}/>
+        <BreadCrumHeader header={"Add Product"} subheader={[{link: '/vendor/dashboard', text :'Home'}, {link: '/vendor/allproducts', text: 'All Products'}, {link: '/vendor/addproducts', text: 'Add Products'}]}/>
         <AddProductBody />
     </Stack>
 </>
