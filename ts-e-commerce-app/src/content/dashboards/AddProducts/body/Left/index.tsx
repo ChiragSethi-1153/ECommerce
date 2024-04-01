@@ -11,31 +11,29 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, {  SetStateAction, useEffect, useState } from "react";
 import InputField from "../../../../../components/InputField";
 import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { getCategory } from "../../../../../features/Category/categoryAction";
 
 type categorytype = {
-  uuid: String;
-  categoryName: String;
-  categoryImage: String[];
-  subCategories: String[];
+  uuid: string;
+  categoryName: string;
+  categoryImage: string[];
+  subCategories: string[];
 }[];
 
-type newProductDetails = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 
 type productDetails = {
-  category: String;
-  title: String;
-  description: String;
+  category: string;
+  title: string;
+  description: string;
   stock: number;
   price: number,
-};
+}
 
-
-const ProductLeft = ( setProduct: newProductDetails, product: productDetails ) => {
-
+const ProductLeft = ({ setProduct,  product}:{setProduct:React.Dispatch<SetStateAction<productDetails>>,product:productDetails} ) => {
+ 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -49,6 +47,7 @@ const ProductLeft = ( setProduct: newProductDetails, product: productDetails ) =
 
   return (
     <Stack>
+      
       <Typography>Product Name</Typography>
       <InputField
         header={"Product Name"}
@@ -56,7 +55,7 @@ const ProductLeft = ( setProduct: newProductDetails, product: productDetails ) =
         fontweight={"600"}
         placeholder={"Product Name"}
         value={product?.title}
-        handleChange={(e) => setProduct({...product, product?.title: e.target.value})}
+        handleChange={(e) => setProduct({...product, title: e.target.value})}
       />
       <Stack gap={1} py={1}>
         <Typography>Description</Typography>
@@ -116,7 +115,7 @@ const ProductLeft = ( setProduct: newProductDetails, product: productDetails ) =
           <TextField
             placeholder={"Stock Quantity"}
             value={product?.stock}
-            onChange={(e) => setProduct({...product, stock: e.target.value})}
+            onChange={(e) => setProduct({...product, stock: parseInt(e.target.value)})}
           />
         </Grid>
         <Grid item xs={6}>
@@ -125,7 +124,7 @@ const ProductLeft = ( setProduct: newProductDetails, product: productDetails ) =
             type="number"
             placeholder={"Regular Price"}
             value={product?.price}
-            onChange={(e) => setProduct({...product, price: e.target.value})}
+            onChange={(e) => setProduct({...product, price: parseInt(e.target.value)})}
           />
           <Typography>Sale Price</Typography>
           <InputField

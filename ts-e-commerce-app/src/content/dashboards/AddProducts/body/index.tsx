@@ -5,9 +5,9 @@ import ProductRight from './right'
 
 
 type productDetails = {
-  category: String;
-  title: String;
-  description: String;
+  category: string;
+  title: string;
+  description: string;
   stock: number;
   price: number,
 };
@@ -18,7 +18,7 @@ type productDetails = {
 const AddProductBody = () => {
 
 
-  const [images, setImages] = useState<String[] | []>([])
+  const [images, setImages] = useState<string[] | []>([])
 
   const [inputs, setInputs] = useState<productDetails>({category: '', title: '', description: '', stock: 0, price: 0})
 
@@ -45,7 +45,7 @@ const AddProductBody = () => {
   return (
     <Grid spacing={2} container my={3} p={3} sx={{ backgroundColor: 'white', borderRadius: '20px' }}>
                     <Grid item xs={6.5} >
-                        <ProductLeft setProduct={setInputs} product={inputs} />
+                        <ProductLeft setProduct={setInputs  } product={inputs} />
                     </Grid>
                     <Grid item xs={5.5}>
                         {/* <Box width={'100%'} height={'30%'} sx={{ backgroundColor: 'lightgray', borderRadius: '15px' }}></Box> */}
