@@ -2,6 +2,8 @@ import {
   Box,
   FormControl,
   Grid,
+  Input,
+  InputBase,
   InputLabel,
   MenuItem,
   Select,
@@ -9,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import InputField from "../../../../../components/InputField";
 import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { getCategory } from "../../../../../features/Category/categoryAction";
@@ -21,7 +23,19 @@ type categorytype = {
   subCategories: String[];
 }[];
 
-const ProductLeft = () => {
+type newProductDetails = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+
+type productDetails = {
+  category: String;
+  title: String;
+  description: String;
+  stock: number;
+  price: number,
+};
+
+
+const ProductLeft = ( setProduct: newProductDetails, product: productDetails ) => {
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -31,7 +45,7 @@ const ProductLeft = () => {
   const categories = useAppSelector((state) => state?.category?.content);
   console.log(categories.map((i) => i.categoryName));
 
-  const [inputs, setInputs] = useState();
+
 
   return (
     <Stack>
@@ -41,6 +55,8 @@ const ProductLeft = () => {
         fontsize={"14"}
         fontweight={"600"}
         placeholder={"Product Name"}
+        value={product?.title}
+        handleChange={(e) => setProduct({...product, product?.title: e.target.value})}
       />
       <Stack gap={1} py={1}>
         <Typography>Description</Typography>
@@ -49,17 +65,31 @@ const ProductLeft = () => {
           multiline
           rows={4}
           placeholder="Description................."
+          value={product?.description}
+        onChange={(e) => setProduct({...product, description: e.target.value})}
         />
       </Stack>
       <Typography>Category</Typography>
-      <FormControl sx={{mb: 1}}>
+      <FormControl sx={{ mb: 1 }}>
         <InputLabel>Select Category</InputLabel>
         <Select
-          //   value={status}
           label={`Select category`}
-          //   onChange={handleChange}
+          value={product?.category}
+          onChange={(e) => setProduct({...product, category: e.target.value})}
           sx={{ bgcolor: "#fff" }}
-        ></Select>
+        >
+          {categories &&
+            categories.length > 0 &&
+            categories.map((i) => {
+              return (
+                <>
+                  <MenuItem value={`${i?.categoryName}`}>
+                    {i?.categoryName}
+                  </MenuItem>
+                </>
+              );
+            })}
+        </Select>
       </FormControl>
 
       <Typography>Brand Name</Typography>
@@ -68,6 +98,8 @@ const ProductLeft = () => {
         fontsize={"14"}
         fontweight={"600"}
         placeholder={"Brand Name"}
+        value={''}
+        handleChange={() => {}}
       />
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -77,22 +109,23 @@ const ProductLeft = () => {
             fontsize={"14"}
             fontweight={"600"}
             placeholder={"SKU"}
+            value={''}
+        handleChange={() => {}}
           />
           <Typography>Stock Quantity</Typography>
-          <InputField
-            header={"Stock Quantity"}
-            fontsize={"14"}
-            fontweight={"600"}
+          <TextField
             placeholder={"Stock Quantity"}
+            value={product?.stock}
+            onChange={(e) => setProduct({...product, stock: e.target.value})}
           />
         </Grid>
         <Grid item xs={6}>
           <Typography>Regular Price</Typography>
-          <InputField
-            header={"Regular Price"}
-            fontsize={"14"}
-            fontweight={"600"}
+          <TextField
+            type="number"
             placeholder={"Regular Price"}
+            value={product?.price}
+            onChange={(e) => setProduct({...product, price: e.target.value})}
           />
           <Typography>Sale Price</Typography>
           <InputField
@@ -100,6 +133,8 @@ const ProductLeft = () => {
             fontsize={"14"}
             fontweight={"600"}
             placeholder={"Sale Price"}
+            value={''}
+            handleChange={() => {}}
           />
         </Grid>
       </Grid>

@@ -5,6 +5,10 @@ import CategoryCard from "../../../components/CategoryCard";
 import ProductItemCard from "../../../components/ProductItemCard";
 
 const Home = () => {
+
+  
+
+
   return (
     <Box>
       <Box>

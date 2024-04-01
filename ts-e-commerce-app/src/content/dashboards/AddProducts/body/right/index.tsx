@@ -14,18 +14,6 @@ import Carousel from 'react-material-ui-carousel';
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 
-const top100Films = [
-    { title: 'Mobile' },
-    { title: 'Grocery' },
-    { title: 'Computer' },
-    { title: 'Kitchen' },
-    { title: 'Bed' },
-    { title: 'Dont know tag' },
-    { title: 'Known tag' },
-];
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const ProductRight = () => {
 
@@ -33,7 +21,6 @@ const ProductRight = () => {
 
     const [file, setFile] = useState<File[]>([]);
     const [imageUrls, setImageUrls] = useState<string[]>([]);
-
 
     const handleCancel = (e : React.MouseEvent<HTMLButtonElement>) => {
         navigate(-1)

@@ -4,7 +4,7 @@ const { aclmiddleware } = require('../middleware/acl')
 const { upload, uploadCategory } = require('../middleware/upload')
 
 
-router.post("/categories",uploadCategory, (req, res, next)=>{
+router.post("/categories", uploadCategory, (req, res, next)=>{
         req.body.access = 1; 
         req.body.service = 'category';
         next();

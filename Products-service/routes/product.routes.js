@@ -4,10 +4,27 @@ const { upload } = require('../middleware/upload')
 
 const router = require('express').Router()
 
-router.post("/products",aclmiddleware, upload, productController.createProduct)
-router.get("/products", aclmiddleware, productController.getAllproducts)
-router.put("/products", aclmiddleware, upload, productController.editproduct)
-router.get("/products/:uuid", aclmiddleware, productController.getproduct)
-router.delete("/products/:uuid", aclmiddleware, productController.deleteProduct)
+router.post("/products", upload, (req, res, next)=>{
+    req.body.access = 1; 
+    req.body.service = 'product';
+    next();
+}, 
+ aclmiddleware, productController.createProduct)
+
+router.get("/products", productController.getAllproducts)
+router.put("/products", upload, (req, res, next)=>{
+    req.body.access = 4; 
+    req.body.service = 'product';
+    next();
+}, 
+ aclmiddleware, productController.editproduct)
+
+router.get("/products/:uuid",  productController.getproduct)
+router.delete("/products/:uuid", (req, res, next)=>{
+    req.body.access = 6; 
+    req.body.service = 'product';
+    next();
+}, 
+ aclmiddleware, productController.deleteProduct)
 
 module.exports = router 

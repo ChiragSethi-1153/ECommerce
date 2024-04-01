@@ -4,6 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import styles from'./Navbar.module.css'
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { useAppSelector } from '../../../app/hooks';
 
 const Navbar = () => {
 
@@ -15,6 +16,9 @@ const Navbar = () => {
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     let currentDay = `${weekday[day]}, ${currentDate}, ${month[currentMonth]} `
+
+    const user = useAppSelector((state) => state?.login?.content?.user)
+
 
   return (
     <Box className={styles.navbar}>
@@ -37,8 +41,8 @@ const Navbar = () => {
             
             <Box sx={{display: 'flex', alignItems: 'center', ml: '60px'}}>
                 <Stack sx={{textAlign: 'right'}}>
-                    <Typography sx={{fontFamily: "Poppins", ml: '10px', fontWeight: '500'}}>Name</Typography>
-                    <Typography sx={{fontFamily: "Poppins", ml: '10px', fontWeight: '500'}}>Role</Typography>
+                    <Typography sx={{fontFamily: "Poppins", ml: '10px', fontWeight: '500'}}>{user?.name}</Typography>
+                    <Typography sx={{fontFamily: "Poppins", ml: '10px', fontWeight: '500'}}>{user?.role}</Typography>
                 </Stack>
                 <Avatar sx={{width: '40px', height: '40px', ml: '10px'}}></Avatar>
             </Box>

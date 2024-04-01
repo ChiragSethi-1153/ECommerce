@@ -16,7 +16,7 @@ const AllProducts = () => {
   return (
     <Box className={styles.allProducts}>
         {/* <BreadCrumHeader header={"All Products"} subheader={[{link: "/dashboard", text: "Home"}, {link: "/dashboard/products", text: "All Products"}]} /> */}
-        <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={"center"}>
+        <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={"center"} marginBottom={3}>
         <Header header={"All Products"}  subheader={"All Products"}/>
         <Stack flexDirection={'row'}>
         <CustomButton 

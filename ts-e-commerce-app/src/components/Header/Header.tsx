@@ -9,7 +9,7 @@ type headings = {
 const Header = ({header, subheader} : headings) => {
   return (
       <Stack>
-      <Typography>{header}</Typography>
+      <Typography sx={{fontWeight: 'bold', fontSize: '22px'}}>{header}</Typography>
       <Typography>{subheader}</Typography>
       </Stack>
   )
