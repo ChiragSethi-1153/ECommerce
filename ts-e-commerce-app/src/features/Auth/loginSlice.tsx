@@ -5,15 +5,15 @@ type initialStateProps = {
   isLoading: boolean;
   isLoggedIn: boolean
   content: {
-    message: String;
+    message: string;
     user: {
-      email: String;
-      name: String;
-      role: String;
-      status: String;
-      uuid: String;
+      email: string;
+      name: string;
+      role: string;
+      status: string;
+      uuid: string;
     };
-    token: String;
+    token: string;
   } 
   error: Object | null;
 };

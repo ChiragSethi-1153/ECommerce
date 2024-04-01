@@ -19,12 +19,12 @@ const productSchema = new mongoose.Schema({
     price: {
         type: Number
     },
+    vendorId: {
+        type: String
+    },
     vendor: {
         type: Object,
         name: {
-            type: String
-        },
-        uuid: {
             type: String
         },
         email: {

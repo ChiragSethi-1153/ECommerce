@@ -14,15 +14,16 @@ import PlaceIcon from "@mui/icons-material/Place";
 import CustomButton from "../../../components/Button/CustomButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from '@mui/icons-material/Menu';
+import { useAppSelector } from "../../../app/hooks";
 
 const UserNavbar = () => {
-  const [isLoggedIn, setLoggedIn] = useState(true);
-  const token = localStorage.getItem("token");
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  
+  const user = useAppSelector((state) => state?.login?.content?.user)
 
-  if (token) {
-    setLoggedIn(true);
-  }
 
+
+  console.log("object")
   return (
     <Box className={styles.navbar}>
       {/* <Box display={"flex"} marginLeft={3} marginTop={1}>
@@ -108,17 +109,22 @@ const UserNavbar = () => {
           gap={4}
           sx={{ height: "60px", mr: "80px" }}
         >
+          <Button variant="contained" sx={{ bgcolor: "#ededed", gap: '10px', borderRadius: '50px', "&:hover": {bgcolor: '#ededed'}}}>
+            <ShoppingCartIcon sx={{ color: "black" }} />
+            <Typography color={"black"}>0</Typography>
+          </Button>
+
           <Box sx={{ display: "flex", alignItems: "center", ml: "60px" }}>
             <Stack sx={{ textAlign: "right" }}>
               <Typography
                 sx={{ fontFamily: "Poppins", ml: "10px", fontWeight: "500" }}
               >
-                Name
+                {user?.name}
               </Typography>
               <Typography
                 sx={{ fontFamily: "Poppins", ml: "10px", fontWeight: "500" }}
               >
-                Role
+                {user?.email}
               </Typography>
             </Stack>
             <Avatar sx={{ width: "40px", height: "40px", ml: "10px" }}></Avatar>

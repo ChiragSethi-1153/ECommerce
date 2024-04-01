@@ -1,22 +1,24 @@
-// import {createAsyncThunk} from '@reduxjs/toolkit'
+import {createAsyncThunk} from '@reduxjs/toolkit'
 
-// import loginService from '../../services/Auth/loginService'
-// import signupService from '../../services/Auth/signupService'
-// import { createProductType, getProductType } from './productType'
+import loginService from '../../services/Auth/loginService'
+import signupService from '../../services/Auth/signupService'
+import { createProductType, getProductType } from './productType'
+import getProductService from '../../services/Product/getProduct.service'
 
-// export type content= {
-//     uuid: String,
-//       category: String,
-//       title: String,
-//       description: String,
-//       stock: null,
-//       vendor: {
-//         name: String,
-//         email: String,
-//         uuid: String,
-//       },
-//       productImages: String[]
-//   }
+export type productContent= {
+  uuid: string,
+  category: string,
+  title: string,
+  description: string,
+  stock: number | null,
+  price: number | null
+  vendorId: string
+  vendor: {
+    name: string,
+    email: string,
+  },
+  productImages: string[]
+  }
 
 // export const createProduct = createAsyncThunk(createProductType, async (inputs: content, {rejectWithValue}) => {
 //     try{
@@ -33,27 +35,15 @@
 // })
 
 
-// // export const getProducts = createAsyncThunk(getProductType, async (_, {rejectWithValue}) => {
-// //     try{
-// //         const response = await loginService()
-// //         console.log(response)
-// //         const data = await response.data
-// //         console.log(data)
-// //         return data
-// //     }catch(err) {
-// //         console.log(err)
-// //         return rejectWithValue(err)
-// //     }
-// // })
-
-import React from 'react'
-
-const productAction = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
-
-export default productAction
+export const getProducts = createAsyncThunk(getProductType, async (inputs: string, {rejectWithValue}) => {
+    try{
+        const response = await getProductService(inputs)
+        console.log(response)
+        const data = await response.data
+        console.log(data)
+        return data
+    }catch(err) {
+        console.log(err)
+        return rejectWithValue(err)
+    }
+})

@@ -6,12 +6,12 @@ import type { RootState } from '../../app/store'
 type initialStateProps = {
     isLoading: boolean
     content: {
-        message: String;
+        message: string;
         response: {
-            email: String;
-            name: String;
-            role: String;
-            uuid: String;
+            email: string;
+            name: string;
+            role: string;
+            uuid: string;
         }
       };
     error: Object | null

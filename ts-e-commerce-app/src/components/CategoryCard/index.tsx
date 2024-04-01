@@ -1,18 +1,21 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
 
-type categoryData = {
-    category: String,
-    // img: String,
-}
+type categorytype = {
+    uuid: string;
+    categoryName: string;
+    categoryImage: string[];
+    subCategories: string[];
+  };
 
 
-const CategoryCard = (input: categoryData) => {
+const CategoryCard = (items: any) => {
+    console.log(items.items.categoryName)
   return (
     <Box
         sx={{
             borderRadius: '10px',
-            width: '150px',
+            width: '155px',
             height: '50px',
             display: 'flex',
             alignItems: "center",
@@ -25,8 +28,17 @@ const CategoryCard = (input: categoryData) => {
             }
         }}
     >
-        <img src={require('../../assets/category1.png')} alt={'category'} width={"40px"} height={'40px'} style={{borderRadius: '5px'}} />
-        <Typography>{input.category}</Typography>
+        {
+            items?.items?.categoryImage && items?.items?.categoryImage.length > 0 &&
+            items?.items?.categoryImage?.map((i: any) => {
+                return (
+                    <>
+                    <img src={`${process.env.REACT_APP_PRODUCT_SERVER}/${i}`} alt={'category'} width={"40px"} height={'40px'} style={{borderRadius: '5px'}} />
+                    </>
+                )
+            })
+        }
+        <Typography>{items?.items?.categoryName}</Typography>
     </Box>
   )
 }

@@ -124,6 +124,10 @@ const routes: RouteObject[] = [
             path: "delivery",
             element: <Shipment />,
           },
+          {
+            path: "settings",
+            element: <Settings />,
+          },
         ],
       },
     ],

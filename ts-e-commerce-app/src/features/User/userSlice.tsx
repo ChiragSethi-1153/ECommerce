@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProducts } from "./productAction";
+import { updateUser } from "./userAction";
 
 
 type initialStateProps = {
@@ -43,29 +43,14 @@ const initialState: initialStateProps = {
 };
 
 export const loginSlice = createSlice({
-  name: "products",
+  name: "users",
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // builder.addCase(createProduct.pending, (state) => {
-    //   state.isLoading = true;
-    // });
-    // builder.addCase(createProduct.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.error = null;
-    //   if (action.payload) {
-    //     state.isLoggedIn = true
-    //     state.content = action.payload;
-    //   }
-    // });
-    // builder.addCase(createProduct.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.error = action.error;
-    // });
-    builder.addCase(getProducts.pending, (state) => {
+    builder.addCase(updateUser.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getProducts.fulfilled, (state, action) => {
+    builder.addCase(updateUser.fulfilled, (state, action) => {
       state.isLoading = false;
       state.error = null;
       if (action.payload) {
@@ -73,7 +58,7 @@ export const loginSlice = createSlice({
         state.content = action.payload;
       }
     });
-    builder.addCase(getProducts.rejected, (state, action) => {
+    builder.addCase(updateUser.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error;
     });
